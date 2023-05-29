@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 
 function change_register() {
-    window.location = "RegisterCliente"
+    window.location = "RegisterNutri"
 }
 
 export const LoginNutri = () => {

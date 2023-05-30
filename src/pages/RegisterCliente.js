@@ -260,6 +260,42 @@ export const RegisterCliente = () => {
                     className="register_input_c">
                 </input>
 
+                <label htmlFor="musculo" className="register_label_c">Musculo</label>
+                <input value={musculo} onChange={e => setMusculo(e.target.value)}
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="0.1"
+                    name="musculo"
+                    id="musculo"
+                    placeholder="% de Musculo"
+                    className="register_input_c">
+                </input>
+
+                <label htmlFor="grasa" className="register_label_c">Grasa</label>
+                <input value={grasa} onChange={e => setGrasa(e.target.value)}
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="0.1"
+                    name="grasa"
+                    id="grasa"
+                    placeholder="% de Grasa"
+                    className="register_input_c">
+                </input>
+
+                <label htmlFor="calorias" className="register_label_c">Calorias</label>
+                <input value={calorias} onChange={e => setCalorias(e.target.value)}
+                    type="number"
+                    min="0"
+                    max="10000"
+                    step="0.1"
+                    name="calorias"
+                    id="calorias"
+                    placeholder="Consumo diario de calorias"
+                    className="register_input_c">
+                </input>
+
                 <label htmlFor="correo" className="register_label_c">Correo electrónico</label>
                 <input value={correo} onChange={e => setCorreo(e.target.value)}
                     type="email"

@@ -81,6 +81,18 @@ export const RegisterNutri = () => {
             isproceed = false;
             errormessage += ' Distrito';
         }
+        if (correo === null || foto === "") {
+            isproceed = false;
+            errormessage += ' Foto';
+        }
+        if (correo === null || tarjeta_credito === "") {
+            isproceed = false;
+            errormessage += ' Tarjeta Credito';
+        }
+        if (correo === null || tipo_cobro === "") {
+            isproceed = false;
+            errormessage += ' Tipo Cobro';
+        }
         if (correo === null || correo === "") {
             isproceed = false;
             errormessage += ' Correo';
@@ -107,8 +119,11 @@ export const RegisterNutri = () => {
         e.preventDefault();
         let regObject = {
             cedula, nombre, apellido1, apellido2, edad,
-            fecha_nac, peso, imc, provincia, canton, distrito, correo, password
+            fecha_nac, peso, imc, provincia, canton, distrito,
+            foto, tarjeta_credito, tipo_cobro, correo, password
         };
+        console.log(regObject.tipo_cobro)
+        console.log(regObject.provincia)
         if (IsValidate()) {
             // Este post envia la informacion al API
             fetch("", { //Falta el link
@@ -216,13 +231,21 @@ export const RegisterNutri = () => {
                 </input>
 
                 <label htmlFor="provincia" className="register_label">Provincia</label>
-                <input value={provincia} onChange={e => setProvincia(e.target.value)}
-                    type="text"
+                <select
                     name="provincia"
                     id="provincia"
-                    placeholder="Ingrese su provincia"
-                    className="register_input">
-                </input>
+                    className="register_select"
+                    onChange={e => setProvincia(e.target.value)}
+                >
+                    <option selected disabled>Eliga una opcion</option>
+                    <option value="Alajuela">Alajuela</option>
+                    <option value="Cartago">Cartago</option>
+                    <option value="Guanacaste">Guanacaste</option>
+                    <option value="Heredia">Heredia</option>
+                    <option value="Limón">Limón</option>
+                    <option value="Puntarenas">Puntarenas</option>
+                    <option value="San José">San José</option>
+                </select>
 
                 <label htmlFor="canton" className="register_label">Canton</label>
                 <input value={canton} onChange={e => setCanton(e.target.value)}
@@ -255,14 +278,27 @@ export const RegisterNutri = () => {
                     className="register_input_file">
                 </input>
 
-                <label htmlFor="correo" className="register_label">Tarjeta de crédito</label>
-                <input value={correo} onChange={e => setCorreo(e.target.value)}
+                <label htmlFor="tarjeta_credito" className="register_label">Tarjeta de crédito</label>
+                <input value={tarjeta_credito} onChange={e => setTarjeta_credito(e.target.value)}
                     type="email"
-                    name="correo"
-                    id="correo"
-                    placeholder="ejemplo@gmail.com"
+                    name="tarjeta_credito"
+                    id="tarjeta_credito"
+                    placeholder="XXXX-XXXX-XXXX-XXXX"
                     className="register_input">
                 </input>
+
+                <label htmlFor="tipo_cobro" className="register_label">Tipo de cobro</label>
+                <select
+                    name="tipo_cobro"
+                    id="tipo_cobro"
+                    className="register_select"
+                    onChange={e => setTipo_cobro(e.target.value)}
+                >
+                    <option selected disabled>Eliga una opcion</option>
+                    <option value="Semanal">Semanal</option>
+                    <option value="Mensual">Mensual</option>
+                    <option value="Anual">Anual</option>
+                </select>
 
                 <label htmlFor="correo" className="register_label">Correo electrónico</label>
                 <input value={correo} onChange={e => setCorreo(e.target.value)}
@@ -284,7 +320,6 @@ export const RegisterNutri = () => {
 
                 <button type="submit" className="register_btn">Registrar</button><br />
 
-                {/* () => props.onFormSwitch('login') */}
                 <button onClick={change_log_in} className="loggear_btn">Ya tenes cuenta? Has Login aqui.</button>
             </form>
         </div>

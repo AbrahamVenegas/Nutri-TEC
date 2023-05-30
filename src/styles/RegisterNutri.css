@@ -53,6 +53,16 @@
     display: none;
 }
 
+.register_select {
+    font-family: 'Titillium Web', sans-serif;
+    border: none;
+    height: 3em;
+    width: 80%;
+    border-radius: 0.50em;
+    text-align: center;
+}
+
+
 .register_label_file {
     font-family: 'Titillium Web', sans-serif;
     color: black;
@@ -93,3 +103,4 @@
 .loggear_btn:hover {   
     transform: scale(1.10);
 }
+

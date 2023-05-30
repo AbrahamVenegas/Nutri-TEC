@@ -81,15 +81,15 @@ export const RegisterNutri = () => {
             isproceed = false;
             errormessage += ' Distrito';
         }
-        if (correo === null || foto === "") {
+        if (foto === null || foto === "") {
             isproceed = false;
             errormessage += ' Foto';
         }
-        if (correo === null || tarjeta_credito === "") {
+        if (tarjeta_credito === null || tarjeta_credito === "") {
             isproceed = false;
             errormessage += ' Tarjeta Credito';
         }
-        if (correo === null || tipo_cobro === "") {
+        if (tipo_cobro === null || tipo_cobro === "") {
             isproceed = false;
             errormessage += ' Tipo Cobro';
         }

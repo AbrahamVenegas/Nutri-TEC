@@ -17,9 +17,10 @@ export const RegisterCliente = () => {
     const [apellido2, setApellido2] = useState('');
     const [edad, setEdad] = useState('');
     const [fecha_nac, setFecha_nac] = useState('');
-    const [peso, setPeso] = useState('');
-    const [imc, setIMC] = useState('');
+    const [peso, setPeso] = useState(0.01); 
+    const [imc, setIMC] = useState(0);
     const [pais, setPais] = useState('');
+    const [estatura, setEstatura] = useState(0.01);
     const [cintura, setCintura] = useState('');
     const [cuello, setCuello] = useState('');
     const [caderas, setCaderas] = useState('');
@@ -28,6 +29,16 @@ export const RegisterCliente = () => {
     const [calorias, setCalorias] = useState('');
     const [correo, setCorreo] = useState('');
     const [password, setPassword] = useState('');
+
+    //Se calcula el IMC utilizando la formula  imc = peso/estatura^2
+    function calcularIMC() {
+        var resPeso = document.getElementById("peso").value;
+        var resEstatura = document.getElementById("estatura").value;
+        
+        var resIMC = (resPeso/(resEstatura*resEstatura))
+        console.log('IMC: ' + resIMC.toFixed(2))
+        setIMC(resIMC.toFixed(2))
+    }
 
     //const navigate = useNavigate();
 
@@ -67,9 +78,9 @@ export const RegisterCliente = () => {
             isproceed = false;
             errormessage += ' Pais';
         }
-        if (peso === null || peso === "") {
+        if (estatura === null || estatura === "") {
             isproceed = false;
-            errormessage += ' Peso';
+            errormessage += ' Estatura';
         }
         if (cintura === null || cintura === "") {
             isproceed = false;
@@ -121,7 +132,7 @@ export const RegisterCliente = () => {
         e.preventDefault();
         let regObject = {
             nombre, apellido1, apellido2, edad,
-            fecha_nac, peso, imc, pais, peso, 
+            fecha_nac, peso, imc, pais, estatura, 
             cintura, cuello, caderas, musculo,
             grasa, calorias, correo, password
         };
@@ -193,11 +204,14 @@ export const RegisterCliente = () => {
                 </input>
 
                 <label htmlFor="peso" className="register_label_c">Peso</label>
-                <input value={peso} onChange={e => setPeso(e.target.value)}
-                    type="text"
+                <input value={peso} onChange={e => setPeso(e.target.value)} onClick={calcularIMC}
+                    type="number"
+                    min="0.01"
+                    max="500"
+                    step="0.01"
                     name="peso"
                     id="peso"
-                    placeholder="Ingrese su peso en kg"
+                    placeholder="Peso (en kg)"
                     className="register_input_c">
                 </input>
 
@@ -210,6 +224,7 @@ export const RegisterCliente = () => {
                     name="IMC"
                     id="IMC"
                     placeholder="Indice de masa corporal"
+                    readOnly
                     className="register_input_c">
                 </input>
 
@@ -222,14 +237,24 @@ export const RegisterCliente = () => {
                     className="register_input_c">
                 </input>
 
-                {/* Peso actual? */}
+                <label htmlFor="estatura" className="register_label_c">Estatura</label>
+                <input value={estatura} onChange={e => setEstatura(e.target.value)} onClick={calcularIMC}
+                    type="number"
+                    min="0.01"
+                    max="2"
+                    step="0.01"
+                    name="estatura"
+                    id="estatura"
+                    placeholder="Estatura (en m)"
+                    className="register_input_c">
+                </input>
 
                 <label htmlFor="cintura" className="register_label_c">Cintura</label>
                 <input value={cintura} onChange={e => setCintura(e.target.value)}
                     type="number"
-                    min="0"
+                    min="0.01"
                     max="200"
-                    step="0.1"
+                    step="0.01"
                     name="cintura"
                     id="cintura"
                     placeholder="Cintura (en cm)"
@@ -239,9 +264,9 @@ export const RegisterCliente = () => {
                 <label htmlFor="cuello" className="register_label_c">Cuello</label>
                 <input value={cuello} onChange={e => setCuello(e.target.value)}
                     type="number"
-                    min="0"
+                    min="0.01"
                     max="200"
-                    step="0.1"
+                    step="0.01"
                     name="cuello"
                     id="cuello"
                     placeholder="Cuello (en cm)"
@@ -251,9 +276,9 @@ export const RegisterCliente = () => {
                 <label htmlFor="caderas" className="register_label_c">Caderas</label>
                 <input value={caderas} onChange={e => setCaderas(e.target.value)}
                     type="number"
-                    min="0"
+                    min="0.01"
                     max="200"
-                    step="0.1"
+                    step="0.01"
                     name="caderas"
                     id="caderas"
                     placeholder="Caderas (en cm)"
@@ -263,9 +288,9 @@ export const RegisterCliente = () => {
                 <label htmlFor="musculo" className="register_label_c">Musculo</label>
                 <input value={musculo} onChange={e => setMusculo(e.target.value)}
                     type="number"
-                    min="0"
+                    min="0.01"
                     max="100"
-                    step="0.1"
+                    step="0.01"
                     name="musculo"
                     id="musculo"
                     placeholder="% de Musculo"
@@ -275,9 +300,9 @@ export const RegisterCliente = () => {
                 <label htmlFor="grasa" className="register_label_c">Grasa</label>
                 <input value={grasa} onChange={e => setGrasa(e.target.value)}
                     type="number"
-                    min="0"
+                    min="0.01"
                     max="100"
-                    step="0.1"
+                    step="0.01"
                     name="grasa"
                     id="grasa"
                     placeholder="% de Grasa"
@@ -287,9 +312,9 @@ export const RegisterCliente = () => {
                 <label htmlFor="calorias" className="register_label_c">Calorias</label>
                 <input value={calorias} onChange={e => setCalorias(e.target.value)}
                     type="number"
-                    min="0"
+                    min="0.01"
                     max="10000"
-                    step="0.1"
+                    step="0.01"
                     name="calorias"
                     id="calorias"
                     placeholder="Consumo diario de calorias"

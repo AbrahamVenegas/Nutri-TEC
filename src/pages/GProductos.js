@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ModalProductos from "../components/GProductos/ModalProductos";
 import TablaProductos from "../components/GProductos/TablaProductos";
+import NavbarNutri from "../components/NavbarNutri";
 
 const GProductos = () => {
 
@@ -75,7 +76,7 @@ const GProductos = () => {
             return;
         }
 
-        const datosproductos = await fetch("" , { //Falta el link
+        const datosproductos = await fetch("", { //Falta el link
             method: 'DELETE',
         })
         toast.success("Dato borrado con exito")
@@ -87,6 +88,7 @@ const GProductos = () => {
 
     return (
         <>
+            <NavbarNutri />
             <ToastContainer />
             <Container>
                 <Row className="mt-5">
@@ -97,7 +99,7 @@ const GProductos = () => {
                             </Card.Header>
                             <Card.Body>
                                 <Button size="sm" variant="primary"
-                                    onClick={() => setMostrarModal(!mostrarModal)}>Agregar puesto</Button>
+                                    onClick={() => setMostrarModal(!mostrarModal)}>Agregar Productos</Button>
                                 <hr />
                                 <TablaProductos
                                     data={productos}

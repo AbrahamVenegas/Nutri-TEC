@@ -4,6 +4,8 @@ import { LoginNutri } from "./pages/LoginNutri";
 import { LoginCliente } from "./pages/LoginCliente";
 import { RegisterNutri } from "./pages/RegistroNutri";
 import RegistroMedidas from "./pages/registroMedidas";
+import RegistroConsumo from "./pages/registroConsumo";
+import GestionProdcutos from "./pages/GestionProductos";
 import { RegisterCliente } from "./pages/RegisterCliente";
 import GProductos from "./pages/GProductos";
 import GPlanes from "./pages/GPlanes";
@@ -25,6 +27,8 @@ function App() {
 
           <Route path="/RegisterCliente" element={<RegisterCliente />} />
           <Route path="/Medidas" element={<RegistroMedidas />} />
+          <Route path="/consumo" element={<RegistroConsumo />} />
+          <Route path="/productos" element={<GestionProdcutos />} />
         </Routes>
       </Router>
     </>

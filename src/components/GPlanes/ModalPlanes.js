@@ -55,6 +55,19 @@ const ModalPlanes = ({ mostrarModal, setMostrarModal, guardarPlanes,
         setEditar(null)
     }
 
+    //Se calcula las calorias totales sumando las calorias individuales de cada comida
+    function calcularCalorias() {
+        var calDesayuno = document.getElementById("desayuno").value;
+        var calMeriendaM = document.getElementById("meriendaM").value;
+        var calAlmuerzo = document.getElementById("almuerzo").value;
+        var calMeriendaT = document.getElementById("meriendaT").value;
+        var calCena = document.getElementById("cena").value;
+        
+        var resCalorias = calDesayuno + calMeriendaM + calAlmuerzo + calMeriendaT + calCena
+        console.log('Calorias totales: ' + resCalorias.toFixed(2))
+        planes.total_calorias = resCalorias.toFixed(2)
+    }
+
     return (
         <Modal show={mostrarModal} >
             <ModalHeader>

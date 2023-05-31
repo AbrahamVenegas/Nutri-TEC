@@ -3,7 +3,7 @@ import { Table, Button, Modal, Form } from 'react-bootstrap';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const RegistroMedidas = () => {
+const GestionProdcutos = () => {
     const [planillas, setPlanillas] = useState([]);
     const [descripcion, setDescripcion] = useState(['']);
     const [medidas, setMedidas] = useState({
@@ -46,12 +46,6 @@ const RegistroMedidas = () => {
         setPlanillaId(null);
     };
 
-    const onChangeFecha = (event) => {
-        const selectedOption = event.target.value;
-        console.log(selectedOption);
-    };
-
-
     return (
         <div className="container">
             <h2 className="my-4">Gestión de Planillas</h2>
@@ -59,7 +53,7 @@ const RegistroMedidas = () => {
                 <div className="col-md-6">
                     <Form>
                         <Form.Group controlId="cintura">
-                            <Form.Label>Cintura:</Form.Label>
+                            <Form.Label>Codigo de barras:</Form.Label>
                             <Form.Control
                                 type="number"
                                 value={medidas.cintura}
@@ -67,7 +61,7 @@ const RegistroMedidas = () => {
                             />
                         </Form.Group>
                         <Form.Group controlId="cuello">
-                            <Form.Label>Cuello:</Form.Label>
+                            <Form.Label>Descripción:</Form.Label>
                             <Form.Control
                                 type="number"
                                 value={medidas.cuello}
@@ -75,7 +69,7 @@ const RegistroMedidas = () => {
                             />
                         </Form.Group>
                         <Form.Group controlId="caderas">
-                            <Form.Label>Caderas:</Form.Label>
+                            <Form.Label>Tamaño de la porción (g/mL):</Form.Label>
                             <Form.Control
                                 type="number"
                                 value={medidas.caderas}
@@ -83,7 +77,7 @@ const RegistroMedidas = () => {
                             />
                         </Form.Group>
                         <Form.Group controlId="porcentajeMusculo">
-                            <Form.Label>Porcentaje de Músculo:</Form.Label>
+                            <Form.Label>Energía (Kcal):</Form.Label>
                             <Form.Control
                                 type="number"
                                 value={medidas.porcentajeMusculo}
@@ -91,33 +85,60 @@ const RegistroMedidas = () => {
                             />
                         </Form.Group>
                         <Form.Group controlId="porcentajeGrasa">
-                            <Form.Label>Porcentaje de Grasa:</Form.Label>
+                            <Form.Label>Grasa (g):</Form.Label>
                             <Form.Control
-                                type="select"
+                                type="number"
                                 value={medidas.porcentajeGrasa}
                                 onChange={e => setMedidas({ ...medidas, porcentajeGrasa: e.target.value })}
                             />
                         </Form.Group>
-                        <Form.Group controlId="fecha">
-                            <Form.Label>Fecha:</Form.Label>
+                        <Form.Group controlId="sodio">
+                            <Form.Label>Sodio (mg):</Form.Label>
                             <Form.Control
-                                type="date"
-                                value={medidas.fecha}
-                                onChange={e => setMedidas({ ...medidas, fecha: e.target.value })}
+                                type="number"
+                                value={medidas.porcentajeGrasa}
+                                onChange={e => setMedidas({ ...medidas, porcentajeGrasa: e.target.value })}
                             />
                         </Form.Group>
-                        <Form.Group controlId="fecha1">
-                            <Form.Label>Fecha:</Form.Label>
+                        <Form.Group controlId="carbohidratos">
+                            <Form.Label>carbohidratos (g):</Form.Label>
                             <Form.Control
-                                as="select"
-                                onChange={onChangeFecha}
-                            >
-                                <option value="">Seleccione una fecha</option>
-                                <option value="2023-05-01">1 de mayo de 2023</option>
-                                <option value="2023-05-02">2 de mayo de 2023</option>
-                                <option value="2023-05-03">3 de mayo de 2023</option>
-                                {/* Agrega más opciones de fecha según sea necesario */}
-                            </Form.Control>
+                                type="number"
+                                value={medidas.porcentajeGrasa}
+                                onChange={e => setMedidas({ ...medidas, porcentajeGrasa: e.target.value })}
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="proteina">
+                            <Form.Label>Proteína (g):</Form.Label>
+                            <Form.Control
+                                type="number"
+                                value={medidas.porcentajeGrasa}
+                                onChange={e => setMedidas({ ...medidas, porcentajeGrasa: e.target.value })}
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="vitaminas">
+                            <Form.Label>Vitaminas :</Form.Label>
+                            <Form.Control
+                                type="number"
+                                value={medidas.porcentajeGrasa}
+                                onChange={e => setMedidas({ ...medidas, porcentajeGrasa: e.target.value })}
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="calcio">
+                            <Form.Label>Calcio (mg):</Form.Label>
+                            <Form.Control
+                                type="number"
+                                value={medidas.porcentajeGrasa}
+                                onChange={e => setMedidas({ ...medidas, porcentajeGrasa: e.target.value })}
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="hierro">
+                            <Form.Label>Hierro (mg):</Form.Label>
+                            <Form.Control
+                                type="number"
+                                value={medidas.porcentajeGrasa}
+                                onChange={e => setMedidas({ ...medidas, porcentajeGrasa: e.target.value })}
+                            />
                         </Form.Group>
                         {planillaId === null ? (
                             <Button variant="primary" /*onClick={agregarPlanilla}*/>Agregar Planilla</Button>
@@ -136,8 +157,12 @@ const RegistroMedidas = () => {
                         <th>Caderas</th>
                         <th>Porcentaje de músculo</th>
                         <th>Porcentaje de grasa</th>
-                        <th>Fecha</th>
-                        <th>Acciones</th>
+                        <th>ID</th>
+                        <th>Cintura</th>
+                        <th>Cuello</th>
+                        <th>Caderas</th>
+                        <th>Porcentaje de músculo</th>
+                        <th>Porcentaje de grasa</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -176,4 +201,4 @@ const RegistroMedidas = () => {
     );
 };
 
-export default RegistroMedidas;
+export default GestionProdcutos;

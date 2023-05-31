@@ -4,6 +4,8 @@ import { LoginNutri } from "./pages/LoginNutri";
 import { LoginCliente } from "./pages/LoginCliente";
 import { RegisterNutri } from "./pages/RegistroNutri";
 import RegistroMedidas from "./pages/registroMedidas";
+import RegistroConsumo from "./pages/registroConsumo";
+import GestionProdcutos from "./pages/GestionProductos";
 
 
 function App() {
@@ -16,6 +18,8 @@ function App() {
           <Route path="/LoginCliente" element={<LoginCliente />} />
           <Route path="/RegisterNutri" element={<RegisterNutri />} />
           <Route path="/Medidas" element={<RegistroMedidas />} />
+          <Route path="/consumo" element={<RegistroConsumo />} />
+          <Route path="/productos" element={<GestionProdcutos />} />
         </Routes>
       </Router>
     </>

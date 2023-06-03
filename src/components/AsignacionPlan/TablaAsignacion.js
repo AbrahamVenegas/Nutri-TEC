@@ -43,7 +43,7 @@ const TablaAsignacion = ({ dataPlanes, dataProducto, dataNutricionista,
                                             size="sm"
                                             className="me-2"
                                             onClick={() => enviarDatos(item)}
-                                        >Editar</Button>
+                                        >Agregar Plan</Button>
                                     </td>
                                 </tr>
                             ))

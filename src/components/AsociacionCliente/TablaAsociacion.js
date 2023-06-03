@@ -18,6 +18,7 @@ const TablaAsociacion = ({ data, setEditar, mostrarModal, setMostrarModal }) => 
                     <th>Nombre</th>
                     <th>Primer Apellido</th>
                     <th>Segundo Apellido</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -29,16 +30,21 @@ const TablaAsociacion = ({ data, setEditar, mostrarModal, setMostrarModal }) => 
                     ) : (
                         data.map((item) => (
                             <tr key={item.id}>
+                                <td>{item.name}</td>
+                                <td>{item.email}</td>
+                                <td>{item.gender}</td>
+                                {/*
                                 <td>{item.nombre}</td>
                                 <td>{item.apellido1}</td>
-                                <td>{item.apellido2}</td>
+                                <td>{item.apellido2}</td> 
+                                 */}
                                 <td>
                                     <Button
                                         variant="primary"
                                         size="sm"
                                         className="me-2"
                                         onClick={() => agregarCliente(item)}
-                                    >Agregar</Button>
+                                    >Asociar Paciente</Button>
                                     {/* <Button
                                         variant="danger"
                                         size="sm"

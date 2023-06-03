@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Form, FormGroup, Modal, ModalBody, ModalHeader, ModalFooter, Button } from "react-bootstrap";
 
 // Estado inicial de la informacion 
-const modeloAsignacion = {
+const modeloAsociacion = {
     indice: 0,
     plan: "",
     fecha_inicio: "",
@@ -10,17 +10,17 @@ const modeloAsignacion = {
     total_calorias: "",
 }
 
-const ModalAsignacion = ({ mostrarModal, setMostrarModal, guardarAsignacion,
-    editar, setEditar, editarAsignacion }) => {
+const ModalAsociacion = ({ mostrarModal, setMostrarModal, agregarListaPaciente,
+    editar, setEditar, editarPacientes }) => {
 
-    const [asignacion, setAsignacion] = useState(modeloAsignacion);
+    const [asociacion, setAsociacion] = useState(modeloAsociacion);
 
     // Toda la informacion de los inputs se actualiza en la costante del estado inicial
     const actualizarDato = (e) => {
         console.log(e.target.name + " : " + e.target.value)
-        setAsignacion(
+        setAsociacion(
             {
-                ...asignacion,
+                ...asociacion,
                 [e.target.name]: e.target.value
             }
         )
@@ -28,20 +28,20 @@ const ModalAsignacion = ({ mostrarModal, setMostrarModal, guardarAsignacion,
 
     // Se guarda los datos de los inputs y se envia para hacer el POST o PUT
     const enviarDatos = () => {
-        if (asignacion.indice == 0) {
-            guardarAsignacion(asignacion)
+        if (asociacion.indice == 0) {
+            agregarListaPaciente(asociacion)
         } else {
-            editarAsignacion(asignacion)
+            editarPacientes(asociacion)
         }
 
-        setAsignacion(modeloAsignacion);
+        setAsociacion(modeloAsociacion);
     }
 
     useEffect(() => {
         if (editar != null) {
-            setAsignacion(editar)
+            setAsociacion(editar)
         } else {
-            setAsignacion(modeloAsignacion)
+            setAsociacion(modeloAsociacion)
         }
     }, [editar])
 
@@ -54,33 +54,19 @@ const ModalAsignacion = ({ mostrarModal, setMostrarModal, guardarAsignacion,
     return (
         <Modal show={mostrarModal} >
             <ModalHeader>
-                {asignacion.indice == 0 ? "Nueva Asignacion" : "Nueva Asignacion"}
+                {asociacion.indice == 0 ? "Nueva Asociacion" : "Nueva Asociacion"}
             </ModalHeader>
             <ModalBody>
                 <Form>
                     <FormGroup>
-                        <Form.Label>Plan alimenticio</Form.Label>
+                        <Form.Label>Asociar Paciente</Form.Label>
                         <Form.Select
                             name="plan"
-                            onChange={(e) => actualizarDato(e)} value={asignacion.name}>
+                            onChange={(e) => actualizarDato(e)} value={asociacion.id}>
                             <option>
-                                {asignacion.name}
+                                {asociacion.id}
                             </option>
                         </Form.Select>
-                    </FormGroup>
-                    <FormGroup>
-                        <Form.Label>Fecha de inicio</Form.Label>
-                        <Form.Control
-                            type="date"
-                            name="fecha_inicio"
-                            onChange={(e) => actualizarDato(e)} value={asignacion.fecha_inicio} />
-                    </FormGroup>
-                    <FormGroup>
-                        <Form.Label>Fecha de finalización</Form.Label>
-                        <Form.Control
-                            type="date"
-                            name="fecha_fin"
-                            onChange={(e) => actualizarDato(e)} value={asignacion.fecha_fin} />
                     </FormGroup>
                     <FormGroup>
                         <Form.Label>Nombre</Form.Label>
@@ -89,7 +75,7 @@ const ModalAsignacion = ({ mostrarModal, setMostrarModal, guardarAsignacion,
                             placeholder="Nombre"
                             name="nombre"
                             disabled
-                            onChange={(e) => actualizarDato(e)} value={asignacion.name} />
+                            onChange={(e) => actualizarDato(e)} value={asociacion.name} />
                     </FormGroup>
                     <FormGroup>
                         <Form.Label>Primer apellido</Form.Label>
@@ -98,7 +84,7 @@ const ModalAsignacion = ({ mostrarModal, setMostrarModal, guardarAsignacion,
                             placeholder="Primer apellido"
                             name="apellido1"
                             disabled
-                            onChange={(e) => actualizarDato(e)} value={asignacion.apellido1} />
+                            onChange={(e) => actualizarDato(e)} value={asociacion.apellido1} />
                     </FormGroup>
                     <FormGroup>
                         <Form.Label>Segundo Apellido</Form.Label>
@@ -107,17 +93,7 @@ const ModalAsignacion = ({ mostrarModal, setMostrarModal, guardarAsignacion,
                             placeholder="Segundo Apellido"
                             name="apellido2"
                             disabled
-                            onChange={(e) => actualizarDato(e)} value={asignacion.apellido2} />
-                    </FormGroup>
-
-                    <FormGroup>
-                        <Form.Label>Total de calorias</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Total de calorias"
-                            name="total_calorias"
-                            disabled
-                            onChange={(e) => actualizarDato(e)} value={asignacion.total_calorias} />
+                            onChange={(e) => actualizarDato(e)} value={asociacion.apellido2} />
                     </FormGroup>
                 </Form>
             </ModalBody>
@@ -129,4 +105,4 @@ const ModalAsignacion = ({ mostrarModal, setMostrarModal, guardarAsignacion,
     )
 }
 
-export default ModalAsignacion;
+export default ModalAsociacion;

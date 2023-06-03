@@ -23,8 +23,8 @@ function App() {
           <Route path="/RegisterNutri" element={<RegisterNutri />} />
           <Route path="/LoginCliente" element={<LoginCliente />} />
           <Route path="/GProductos" element={<GProductos />} />
-          <Route path="/GPlanes" element={<GPlanes />} />
           <Route path="/AsociacionCliente" element={<AsociacionCliente />} />
+          <Route path="/GPlanes" element={<GPlanes />} />
           <Route path="/AsignacionPlan" element={<AsignacionPlan />} />
 
           <Route path="/RegisterCliente" element={<RegisterCliente />} />

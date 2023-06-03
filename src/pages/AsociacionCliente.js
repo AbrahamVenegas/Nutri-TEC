@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import NavbarNutri from "../components/NavbarNutri";
 import TablaAsociacion from "../components/AsociacionCliente/TablaAsociacion";
+import ModalAsociacion from "../components/AsociacionCliente/ModalAsociacion";
 
 const AsociacionCliente = () => {
 
@@ -16,7 +17,7 @@ const AsociacionCliente = () => {
     const mostrarPacientes = async () => {
         async function fetchData() {
             try {
-                const response = await fetch(''); //Falta el link
+                const response = await fetch('https://gorest.co.in/public/v2/users'); //Falta el link
                 const data = await response.json();
                 setPaciente(data);
             } catch (error) {
@@ -50,7 +51,7 @@ const AsociacionCliente = () => {
 
     //Falta ver que sucede con el PUT si se queda o no
     //Metodo PUT
-    /* const editarpacientes = async (puesto) => {
+    const editarPacientes = async (puesto) => {
 
         const datospacientes = await fetch("", { //Falta el link
             method: 'PUT',
@@ -65,7 +66,7 @@ const AsociacionCliente = () => {
             setMostrarModal(!mostrarModal);
             mostrarPacientes();
         }
-    } */
+    }
 
     //Falta ver que sucede con el DELETE si se queda o no
     /* //Metodo DELETE
@@ -115,14 +116,14 @@ const AsociacionCliente = () => {
                         </Card>
                     </Col>
                 </Row>
-                {/* <Modalpacientes
+                <ModalAsociacion
                     mostrarModal={mostrarModal}
                     setMostrarModal={setMostrarModal}
                     agregarListaPaciente={agregarListaPaciente}
                     editar={editar}
                     setEditar={setEditar}
-                    editarpacientes={editarpacientes}
-                /> */}
+                    editarPacientes={editarPacientes}
+                />
             </Container>
         </>
     )

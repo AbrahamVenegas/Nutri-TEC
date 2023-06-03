@@ -109,11 +109,13 @@ const ModalPlanes = ({ mostrarModal, setMostrarModal, guardarPlanes,
                     </FormGroup>
                     <FormGroup>
                         <Form.Label>Cena</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Cena"
+                        <Form.Select
                             name="cena"
-                            onChange={(e) => actualizarDato(e)} value={planes.cena} />
+                            onChange={(e) => actualizarDato(e)} value={planes.cena}>
+                            <option>
+                                {planes.cena}
+                            </option>
+                        </Form.Select>
                     </FormGroup>
                     <FormGroup>
                         <Form.Label>Nombre Plan</Form.Label>

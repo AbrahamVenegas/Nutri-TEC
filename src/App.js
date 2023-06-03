@@ -10,6 +10,7 @@ import { RegisterCliente } from "./pages/RegisterCliente";
 import GProductos from "./pages/GProductos";
 import GPlanes from "./pages/GPlanes";
 import AsociacionCliente from "./pages/AsociacionCliente";
+import AsignacionPlan from "./pages/AsignacionPlan";
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
           <Route path="/GProductos" element={<GProductos />} />
           <Route path="/GPlanes" element={<GPlanes />} />
           <Route path="/AsociacionCliente" element={<AsociacionCliente />} />
+          <Route path="/AsignacionPlan" element={<AsignacionPlan />} />
 
           <Route path="/RegisterCliente" element={<RegisterCliente />} />
           <Route path="/Medidas" element={<RegistroMedidas />} />

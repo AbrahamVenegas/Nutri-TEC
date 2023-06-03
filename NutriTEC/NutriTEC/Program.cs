@@ -10,7 +10,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var connectionString = builder.Configuration.GetConnectionString("PostgreSQLConnection");
-builder.Services.AddDbContext<OfficeDb>(options =>
+builder.Services.AddDbContext<NutricionistaDb>(options =>
     options.UseNpgsql(connectionString));
 
 var app = builder.Build();

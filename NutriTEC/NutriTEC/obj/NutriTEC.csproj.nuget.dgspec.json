@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\veron\\source\\repos\\NutriTEC\\NutriTEC\\NutriTEC.csproj": {}
+    "C:\\Users\\pepev\\source\\repos\\NutriTEC\\NutriTEC\\NutriTEC.csproj": {}
   },
   "projects": {
-    "C:\\Users\\veron\\source\\repos\\NutriTEC\\NutriTEC\\NutriTEC.csproj": {
+    "C:\\Users\\pepev\\source\\repos\\NutriTEC\\NutriTEC\\NutriTEC.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\veron\\source\\repos\\NutriTEC\\NutriTEC\\NutriTEC.csproj",
+        "projectUniqueName": "C:\\Users\\pepev\\source\\repos\\NutriTEC\\NutriTEC\\NutriTEC.csproj",
         "projectName": "NutriTEC",
-        "projectPath": "C:\\Users\\veron\\source\\repos\\NutriTEC\\NutriTEC\\NutriTEC.csproj",
-        "packagesPath": "C:\\Users\\veron\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\veron\\source\\repos\\NutriTEC\\NutriTEC\\obj\\",
+        "projectPath": "C:\\Users\\pepev\\source\\repos\\NutriTEC\\NutriTEC\\NutriTEC.csproj",
+        "packagesPath": "C:\\Users\\pepev\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\pepev\\source\\repos\\NutriTEC\\NutriTEC\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\veron\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\pepev\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -41,6 +41,10 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.5, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[7.0.5, )"

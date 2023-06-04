@@ -12,7 +12,7 @@ namespace NutriTEC.Models
         public string Apellido2 { get; set; }
         public int Codigo { get; set; }
         public int Edad { get; set; }
-        public int Cumpleaños { get; set; }
+        public DateTime Cumpleaños { get; set; }
         public int Peso { get; set; }
         public int Altura { get; set; }
         public int IMC { get; set; }

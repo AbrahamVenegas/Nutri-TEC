@@ -24,49 +24,64 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapPost("/employees/", async (Employee e, OfficeDb db) =>
+app.MapPost("/nutricionistas/", async (Nutricionista n, NutricionistaDb db) =>
 {
-    db.Employees.Add(e);
+    db.Nutricionistas.Add(n);
     await db.SaveChangesAsync();
 
-    return Results.Created($"/emplloyee/{e.Id}", e);
+    return Results.Created($"/emplloyee/{n.Cedula}", n);
 
 });
 
-app.MapGet("/employees/{id:int}", async (int id, OfficeDb db) =>
+app.MapGet("/nutricionistas/{id:int}", async (int id, NutricionistaDb db) =>
 {
-    return await db.Employees.FindAsync(id)
-    is Employee e
-    ? Results.Ok(e)
+    return await db.Nutricionistas.FindAsync(id)
+    is Nutricionista n
+    ? Results.Ok(n)
     : Results.NotFound();
     
 });
 
-app.MapPut("/employees/{id:int}", async (int id, Employee e, OfficeDb db) =>
+app.MapPut("/nutricionistas/{id:int}", async (int id, Nutricionista n, NutricionistaDb db) =>
 {
-    if (e.Id != id)
+    if (n.Cedula != id)
         return Results.BadRequest();
 
-    var employee = await db.Employees.FindAsync(id);
+    var nutricionista = await db.Nutricionistas.FindAsync(id);
 
-    if (employee is null) return Results.NotFound();    
+    if (nutricionista is null) return Results.NotFound();
 
-    employee.FirstName = e.FirstName;
-    employee.LastName = e.LastName; 
-    employee.Branch = e.Branch;
-    employee.Age    = e.Age;
+    nutricionista.Nombre = n.Nombre;
+    nutricionista.Apellido1 = n.Apellido1;
+    nutricionista.Apellido2 = n.Apellido2;
+    nutricionista.Codigo = n.Codigo;
+    nutricionista.Edad    = n.Edad;
+    nutricionista.Cumpleaños = n.Cumpleaños;
+    nutricionista.Peso = n.Peso;
+    nutricionista.Altura = n.Altura;
+    nutricionista.IMC = n.IMC;
+    nutricionista.Provincia = n.Provincia;
+    nutricionista.Canton = n.Canton;
+    nutricionista.Distrito = n.Distrito;
+    nutricionista.Foto = n.Foto;
+    nutricionista.Tarjeta = n.Tarjeta;
+    nutricionista.TipoCobro = n.TipoCobro;
+    nutricionista.Usuario = n.Usuario;
+    nutricionista.Password = n.Password;
+    nutricionista.Email = n.Email;
+
     await db.SaveChangesAsync();
 
-    return Results.Ok(employee);
+    return Results.Ok(nutricionista);
 });
 
-app.MapDelete("/employees/{id:int}", async(int id, OfficeDb db) =>
+app.MapDelete("/nutricionistas/{id:int}", async(int id, NutricionistaDb db) =>
 { 
-    var employee = await db.Employees.FindAsync(id);
+    var nutricionista = await db.Nutricionistas.FindAsync(id);
 
-    if (employee is null) return Results.NotFound();
+    if (nutricionista is null) return Results.NotFound();
 
-    db.Employees.Remove(employee);
+    db.Nutricionistas.Remove(nutricionista);
     await db.SaveChangesAsync();
 
     return Results.NoContent();

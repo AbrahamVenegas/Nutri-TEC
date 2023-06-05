@@ -33,11 +33,11 @@ const TablaPlanes = ({ dataPlanes, dataProducto, dataNutricionista,
                         ) : (
                             dataPlanes.map((item) => (
                                 <tr key={item.indice}>
-                                    <td>{dataProducto[item.desayuno]}</td>
-                                    <td>{dataProducto[item.meriendaM]}</td>
-                                    <td>{dataProducto[item.almuerzo]}</td>
-                                    <td>{dataProducto[item.meriendaT]}</td>
-                                    <td>{dataProducto[item.cena]}</td>
+                                    <td>{dataProducto[item.codigo_barras]}</td>
+                                    <td>{dataProducto[item.codigo_barras]}</td>
+                                    <td>{dataProducto[item.codigo_barras]}</td>
+                                    <td>{dataProducto[item.codigo_barras]}</td>
+                                    <td>{dataProducto[item.codigo_barras]}</td>
                                     <td>{item.nombre_plan}</td>
                                     <td>{dataNutricionista[item.nutricionista]}</td>
                                     <td>{item.total_calorias}</td>

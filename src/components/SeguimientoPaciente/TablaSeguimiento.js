@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Table } from "react-bootstrap";
 
 /* eliminarclientes */
-const TablaAsociacion = ({ data, setEditar, mostrarModal, setMostrarModal }) => {
+const TablaSeguimiento = ({ data, setEditar, mostrarModal, setMostrarModal }) => {
 
     const agregarCliente = (clientes) => {
         setEditar(clientes)
@@ -42,12 +42,7 @@ const TablaAsociacion = ({ data, setEditar, mostrarModal, setMostrarModal }) => 
                                         size="sm"
                                         className="me-2"
                                         onClick={() => agregarCliente(item)}
-                                    >Asociar Paciente</Button>
-                                    {/* <Button
-                                        variant="danger"
-                                        size="sm"
-                                        onClick={() => eliminarclientes(item.serie)}
-                                    >Eliminar</Button> */}
+                                    >Retroalimentación</Button>
                                 </td>
                             </tr>
                         ))
@@ -58,4 +53,4 @@ const TablaAsociacion = ({ data, setEditar, mostrarModal, setMostrarModal }) => 
     )
 }
 
-export default TablaAsociacion;
+export default TablaSeguimiento;

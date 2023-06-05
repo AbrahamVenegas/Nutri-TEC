@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Button, Table } from "react-bootstrap";
 
-const TablaAsignacion = ({ dataPlanes, dataProducto, dataNutricionista,
-    setEditar, mostrarModal, setMostrarModal, eliminarPlanes }) => {
+const TablaAsignacion = ({ dataPlanes, setEditar, mostrarModal, setMostrarModal }) => {
 
     const enviarDatos = (planes) => {
         setEditar(planes)
@@ -24,14 +23,14 @@ const TablaAsignacion = ({ dataPlanes, dataProducto, dataNutricionista,
                     {
                         (dataPlanes.length < 1) ? (
                             <tr>
-                                <td colSpan="8">Sin registros</td>
+                                <td colSpan="4">Sin registros</td>
                             </tr>
                         ) : (
                             dataPlanes.map((item) => (
                                 <tr key={item.id}>
-                                    <td>{item.name}</td>
-                                    <td>{item.email}</td>
-                                    <td>{item.gender}</td>
+                                    <td>{item.nombre}</td>
+                                    <td>{item.apellido1}</td>
+                                    <td>{item.apellido2}</td>
                                     {/*
                                     <td>{item.nombre}</td>
                                     <td>{item.apellido1}</td>

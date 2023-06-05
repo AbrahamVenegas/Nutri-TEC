@@ -11,6 +11,7 @@ import GProductos from "./pages/GProductos";
 import GPlanes from "./pages/GPlanes";
 import AsociacionCliente from "./pages/AsociacionCliente";
 import AsignacionPlan from "./pages/AsignacionPlan";
+import SeguimientoPaciente from "./pages/SeguimientoPaciente";
 
 
 function App() {
@@ -21,12 +22,13 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginNutri />} /> {/* LoginNutri */}
           <Route path="/RegisterNutri" element={<RegisterNutri />} />
-          <Route path="/LoginCliente" element={<LoginCliente />} />
           <Route path="/GProductos" element={<GProductos />} />
           <Route path="/AsociacionCliente" element={<AsociacionCliente />} />
           <Route path="/GPlanes" element={<GPlanes />} />
           <Route path="/AsignacionPlan" element={<AsignacionPlan />} />
+          <Route path="/SeguimientoPaciente" element={<SeguimientoPaciente />} />
 
+          <Route path="/LoginCliente" element={<LoginCliente />} />
           <Route path="/RegisterCliente" element={<RegisterCliente />} />
           <Route path="/Medidas" element={<RegistroMedidas />} />
           <Route path="/consumo" element={<RegistroConsumo />} />

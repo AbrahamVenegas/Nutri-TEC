@@ -9,6 +9,8 @@ import GestionProdcutos from "./pages/GestionProductos";
 import { RegisterCliente } from "./pages/RegisterCliente";
 import GProductos from "./pages/GProductos";
 import GPlanes from "./pages/GPlanes";
+import GenerarReporte from "./pages/generarReporte";
+import GestionAprobacion from "./pages/GestionAprobacion";
 
 
 function App() {
@@ -22,11 +24,14 @@ function App() {
           <Route path="/LoginCliente" element={<LoginCliente />} />
           <Route path="/GProductos" element={<GProductos />} />
           <Route path="/GPlanes" element={<GPlanes />} />
+          <Route path="/GenerarReporte" element={<GenerarReporte />} />
 
           <Route path="/RegisterCliente" element={<RegisterCliente />} />
           <Route path="/Medidas" element={<RegistroMedidas />} />
           <Route path="/consumo" element={<RegistroConsumo />} />
           <Route path="/productos" element={<GestionProdcutos />} />
+
+          <Route path="/aprobacionproductos" element={<GestionAprobacion />} />
         </Routes>
       </Router>
     </>

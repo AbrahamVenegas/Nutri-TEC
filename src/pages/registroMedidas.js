@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const RegistroMedidas = () => {
     const [planillas, setPlanillas] = useState([]);
-    const [descripcion, setDescripcion] = useState(['']);
+    const [descripcion, setDescripcion] = useState('');
     const [medidas, setMedidas] = useState({
         cintura: '',
         cuello: '',
@@ -17,7 +17,109 @@ const RegistroMedidas = () => {
     const [planillaId, setPlanillaId] = useState(null);
     const [showModal, setShowModal] = useState(false);
 
-    // Resto del código omitido por brevedad...
+    useEffect(() => {
+        // Obtener las planillas mediante una solicitud GET al API
+        fetchPlanillas();
+    }, []);
+
+    const fetchPlanillas = async () => {
+        try {
+            const response = await fetch('URL_DEL_API/planillas');
+            const data = await response.json();
+            setPlanillas(data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const agregarPlanilla = async () => {
+        try {
+            const response = await fetch('URL_DEL_API/planillas', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    cintura: medidas.cintura,
+                    cuello: medidas.cuello,
+                    caderas: medidas.caderas,
+                    porcentajeMusculo: medidas.porcentajeMusculo,
+                    porcentajeGrasa: medidas.porcentajeGrasa,
+                    fecha: medidas.fecha
+                })
+            });
+            const data = await response.json();
+            if (response.ok) {
+                setPlanillas([...planillas, data]);
+                toast.success('Planilla agregada exitosamente');
+                handleModalClose();
+            } else {
+                toast.error('Error al agregar la planilla');
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const editarPlanilla = async () => {
+        try {
+            const response = await fetch(`URL_DEL_API/planillas/${planillaId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    cintura: medidas.cintura,
+                    cuello: medidas.cuello,
+                    caderas: medidas.caderas,
+                    porcentajeMusculo: medidas.porcentajeMusculo,
+                    porcentajeGrasa: medidas.porcentajeGrasa,
+                    fecha: medidas.fecha
+                })
+            });
+            const data = await response.json();
+            if (response.ok) {
+                const updatedPlanillas = planillas.map(planilla => {
+                    if (planilla.id === planillaId) {
+                        return {
+                            ...planilla,
+                            cintura: data.cintura,
+                            cuello: data.cuello,
+                            caderas: data.caderas,
+                            porcentajeMusculo: data.porcentajeMusculo,
+                            porcentajeGrasa: data.porcentajeGrasa,
+                            fecha: data.fecha
+                        };
+                    }
+                    return planilla;
+                });
+                setPlanillas(updatedPlanillas);
+                toast.success('Planilla actualizada exitosamente');
+                handleModalClose();
+            } else {
+                toast.error('Error al actualizar la planilla');
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const eliminarPlanilla = async (id) => {
+        try {
+            const response = await fetch(`URL_DEL_API/planillas/${id}`, {
+                method: 'DELETE'
+            });
+            if (response.ok) {
+                const updatedPlanillas = planillas.filter(planilla => planilla.id !== id);
+                setPlanillas(updatedPlanillas);
+                toast.success('Planilla eliminada exitosamente');
+            } else {
+                toast.error('Error al eliminar la planilla');
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     const handleEditar = (id) => {
         const planillaEncontrado = planillas.find(planilla => planilla.id === id);
@@ -45,12 +147,6 @@ const RegistroMedidas = () => {
         });
         setPlanillaId(null);
     };
-
-    const onChangeFecha = (event) => {
-        const selectedOption = event.target.value;
-        console.log(selectedOption);
-    };
-
 
     return (
         <div className="container">
@@ -106,23 +202,11 @@ const RegistroMedidas = () => {
                                 onChange={e => setMedidas({ ...medidas, fecha: e.target.value })}
                             />
                         </Form.Group>
-                        <Form.Group controlId="fecha1">
-                            <Form.Label>Fecha:</Form.Label>
-                            <Form.Control
-                                as="select"
-                                onChange={onChangeFecha}
-                            >
-                                <option value="">Seleccione una fecha</option>
-                                <option value="2023-05-01">1 de mayo de 2023</option>
-                                <option value="2023-05-02">2 de mayo de 2023</option>
-                                <option value="2023-05-03">3 de mayo de 2023</option>
-                                {/* Agrega más opciones de fecha según sea necesario */}
-                            </Form.Control>
-                        </Form.Group>
+                        
                         {planillaId === null ? (
-                            <Button variant="primary" /*onClick={agregarPlanilla}*/>Agregar Planilla</Button>
+                            <Button variant="primary" onClick={agregarPlanilla}>Agregar Planilla</Button>
                         ) : (
-                            <Button variant="primary" onClick={() => setShowModal(true)}>Editar Planilla</Button>
+                            <Button variant="primary" onClick={editarPlanilla}>Editar Planilla</Button>
                         )}
                     </Form>
                 </div>
@@ -141,12 +225,17 @@ const RegistroMedidas = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {planillas.map((planilla, index) => (
-                        <tr key={index}>
+                    {planillas.map((planilla) => (
+                        <tr key={planilla.id}>
                             <td>{planilla.id}</td>
-                            <td>{planilla.descripcion}</td>
+                            <td>{planilla.cintura}</td>
+                            <td>{planilla.cuello}</td>
+                            <td>{planilla.caderas}</td>
+                            <td>{planilla.porcentajeMusculo}</td>
+                            <td>{planilla.porcentajeGrasa}</td>
+                            <td>{planilla.fecha}</td>
                             <td>
-                                <Button variant="danger" /*onClick={() => eliminarPlanilla(planilla.id) </td>}*/>Eliminar</Button>
+                                <Button variant="danger" onClick={() => eliminarPlanilla(planilla.id)}>Eliminar</Button>
                                 <Button variant="primary" onClick={() => handleEditar(planilla.id)}>Editar</Button>
                             </td>
                         </tr>
@@ -168,12 +257,12 @@ const RegistroMedidas = () => {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleModalClose}>Cancelar</Button>
-                    <Button variant="primary" /*onClick={editarPlanilla}*/>Guardar Cambios</Button>
+                    <Button variant="primary" onClick={editarPlanilla}>Guardar Cambios</Button>
                 </Modal.Footer>
             </Modal>
         </div>
-
     );
 };
 
 export default RegistroMedidas;
+

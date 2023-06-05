@@ -9,17 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var connectionStringN = builder.Configuration.GetConnectionString("PostgreSQLConnectionN");
-builder.Services.AddDbContext<NutricionistaDb>(options =>
+var connectionStringN = builder.Configuration.GetConnectionString("PostgreSQLConnection");
+builder.Services.AddDbContext<NutriTECDb>(options =>
     options.UseNpgsql(connectionStringN));
-
-var connectionStringGPR = builder.Configuration.GetConnectionString("PostgreSQLConnectionGPR");
-builder.Services.AddDbContext<GestionProductosDb>(options =>
-    options.UseNpgsql(connectionStringGPR));
-
-var connectionStringGPL = builder.Configuration.GetConnectionString("PostgreSQLConnectionGPL");
-builder.Services.AddDbContext<GestionPlanesDb>(options =>
-    options.UseNpgsql(connectionStringGPL));
 
 var app = builder.Build();
 
@@ -32,9 +24,269 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+//Métodos para la tabla Clientes
+
+app.MapPost("/cliente/", async (Clientes cl, NutriTECDb db) =>
+{
+    db.Cliente.Add(cl);
+    await db.SaveChangesAsync();
+
+    return Results.Created($"/cliente/{cl.Id}", cl);
+
+});
+
+app.MapGet("/cliente", async (NutriTECDb db) =>
+{
+    return await db.Cliente.ToListAsync();
+});
+
+app.MapPut("/cliente/{id:int}", async (int id, Clientes cl, NutriTECDb db) =>
+{
+    if (cl.Id != id)
+        return Results.BadRequest();
+
+    var cliente = await db.Cliente.FindAsync(id);
+
+    if (cliente is null) return Results.NotFound();
+
+    cliente.Nombre = cl.Nombre;
+    cliente.Apellido1 = cl.Apellido1;
+    cliente.Apellido2 = cl.Apellido2;
+    //cliente.Edad = cl.Edad; son derivados
+    cliente.FechaNacimiento = cl.FechaNacimiento;
+    cliente.Peso = cl.Peso;
+    cliente.Altura = cl.Altura;
+    //cliente.IMC = cl.IMC; son derivados
+    cliente.PaisResidencia = cl.PaisResidencia;
+    cliente.CaloriasMaximas = cl.CaloriasMaximas;
+    cliente.Usuario = cl.Usuario;
+    cliente.Password = cl.Password;
+    cliente.Email = cl.Email;
+
+    await db.SaveChangesAsync();
+
+    return Results.Ok(cliente);
+});
+
+app.MapDelete("/cliente/{id:int}", async (int id, NutriTECDb db) =>
+{
+    var cliente = await db.Cliente.FindAsync(id);
+
+    if (cliente is null) return Results.NotFound();
+
+    db.Cliente.Remove(cliente);
+    await db.SaveChangesAsync();
+
+    return Results.NoContent();
+});
+
+//Métodos para la tabla Medidas
+
+app.MapPost("/medida/", async (Medidas m, NutriTECDb db) =>
+{
+    db.Medida.Add(m);
+    await db.SaveChangesAsync();
+
+    return Results.Created($"/medida/{m.Id_cliente}", m);
+
+});
+
+app.MapGet("/medida", async (NutriTECDb db) =>
+{
+    return await db.Medida.ToListAsync();
+});
+
+app.MapPut("/medida/{id:int}", async (int id, Medidas m, NutriTECDb db) =>
+{
+    if (m.Id_cliente != id)
+        return Results.BadRequest();
+
+    var medida = await db.Medida.FindAsync(id);
+
+    if (medida is null) return Results.NotFound();
+
+    medida.Fecha = m.Fecha;
+    medida.Cintura = m.Cintura;
+    medida.Cuello = m.Cuello;
+    medida.Caderas = m.Caderas;
+    medida.Porcentaje_musculo = m.Porcentaje_musculo;
+    medida.Porcentaje_grasa = m.Porcentaje_grasa;
+
+    await db.SaveChangesAsync();
+
+    return Results.Ok(medida);
+});
+
+app.MapDelete("/medida/{id:int}", async (int id, NutriTECDb db) =>
+{
+    var medida = await db.Medida.FindAsync(id);
+
+    if (medida is null) return Results.NotFound();
+
+    db.Medida.Remove(medida);
+    await db.SaveChangesAsync();
+
+    return Results.NoContent();
+});
+
+//Métodos para la tabla Consumo
+
+app.MapPost("/consumos/", async (Consumo c, NutriTECDb db) =>
+{
+    db.Consumos.Add(c);
+    await db.SaveChangesAsync();
+
+    return Results.Created($"/consumos/{c.Id_cliente}", c);
+
+});
+
+app.MapGet("/consumos", async (NutriTECDb db) =>
+{
+    return await db.Consumos.ToListAsync();
+
+});
+
+app.MapPut("/consumos/{id:int}", async (int id, Consumo c, NutriTECDb db) =>
+{
+    if (c.Id_cliente != id)
+        return Results.BadRequest();
+
+    var consumos = await db.Consumos.FindAsync(id);
+
+    if (consumos is null) return Results.NotFound();
+
+    consumos.Desayuno = c.Desayuno;
+    consumos.Merienda_Mañana = c.Merienda_Mañana;
+    consumos.Almuerzo = c.Almuerzo;
+    consumos.Merienda_Tarde = c.Merienda_Tarde;
+    consumos.Cena = c.Cena;
+    consumos.Fecha = c.Fecha;
+
+    await db.SaveChangesAsync();
+
+    return Results.Ok(consumos);
+});
+
+app.MapDelete("/consumos/{id:int}", async (int id, NutriTECDb db) =>
+{
+    var consumos = await db.Consumos.FindAsync(id);
+
+    if (consumos is null) return Results.NotFound();
+
+    db.Consumos.Remove(consumos);
+    await db.SaveChangesAsync();
+
+    return Results.NoContent();
+});
+
+
+
+//Métodos para la tabla Gestión de Productos
+
+app.MapPost("/gestiondeproductos/", async (GestionProductos gpr, NutriTECDb db) =>
+{
+    db.GestiondeProductos.Add(gpr);
+    await db.SaveChangesAsync();
+
+    return Results.Created($"/gestiondeproductos/{gpr.Codigo_barras}", gpr);
+
+});
+
+app.MapGet("/gestiondeproductos", async (NutriTECDb db) =>
+{
+    return await db.GestiondeProductos.ToListAsync();
+});
+
+app.MapPut("/gestiondeproductos/{id:int}", async (int id, GestionProductos gpr, NutriTECDb db) =>
+{
+    if (gpr.Codigo_barras != id)
+        return Results.BadRequest();
+
+    var gestionProductos = await db.GestiondeProductos.FindAsync(id);
+
+    if (gestionProductos is null) return Results.NotFound();
+
+    gestionProductos.Descripcion = gpr.Descripcion;
+    gestionProductos.Porcion = gpr.Porcion;
+    gestionProductos.Energia = gpr.Energia;
+    gestionProductos.Grasa = gpr.Grasa;
+    gestionProductos.Sodio = gpr.Sodio;
+    gestionProductos.Carbohidratos = gpr.Carbohidratos;
+    gestionProductos.Proteina = gpr.Proteina;
+    gestionProductos.Vitaminas = gpr.Vitaminas;
+    gestionProductos.Calcio = gpr.Calcio;
+    gestionProductos.Hierro = gpr.Hierro;
+    gestionProductos.Aprobado = gpr.Aprobado;   
+
+    await db.SaveChangesAsync();
+
+    return Results.Ok(gestionProductos);
+});
+
+app.MapDelete("/gestiondeproductos/{id:int}", async (int id, NutriTECDb db) =>
+{
+    var gestionProductos = await db.GestiondeProductos.FindAsync(id);
+
+    if (gestionProductos is null) return Results.NotFound();
+
+    db.GestiondeProductos.Remove(gestionProductos);
+    await db.SaveChangesAsync();
+
+    return Results.NoContent();
+});
+
+//Métodos para la tabla Administrador
+
+app.MapPost("/administradores/", async (Administrador a, NutriTECDb db) =>
+{
+    db.Administradores.Add(a);
+    await db.SaveChangesAsync();
+
+    return Results.Created($"/administradores/{a.Cedula}", a);
+
+});
+
+app.MapGet("/administradores", async (NutriTECDb db) =>
+{
+    return await db.Administradores.ToListAsync();
+});
+
+app.MapPut("/administradores/{id:int}", async (int id, Administrador a, NutriTECDb db) =>
+{
+    if (a.Cedula != id)
+        return Results.BadRequest();
+
+    var administradores = await db.Administradores.FindAsync(id);
+
+    if (administradores is null) return Results.NotFound();
+
+    administradores.Nombre = a.Nombre;
+    administradores.Apellido1 = a.Apellido1;
+    administradores.Apellido2 = a.Apellido2;
+    administradores.Usuario = a.Usuario;
+    administradores.Password = a.Password;
+    administradores.Email = a.Email;
+
+    await db.SaveChangesAsync();
+
+    return Results.Ok(administradores);
+});
+
+app.MapDelete("/administradores/{id:int}", async (int id, NutriTECDb db) =>
+{
+    var administradores = await db.Administradores.FindAsync(id);
+
+    if (administradores is null) return Results.NotFound();
+
+    db.Administradores.Remove(administradores);
+    await db.SaveChangesAsync();
+
+    return Results.NoContent();
+});
+
 //Métodos para la tabla Nutricionista
 
-app.MapPost("/nutricionistas/", async (Nutricionista n, NutricionistaDb db) =>
+app.MapPost("/nutricionistas/", async (Nutricionista n, NutriTECDb db) =>
 {
     db.Nutricionistas.Add(n);
     await db.SaveChangesAsync();
@@ -43,16 +295,12 @@ app.MapPost("/nutricionistas/", async (Nutricionista n, NutricionistaDb db) =>
 
 });
 
-app.MapGet("/nutricionistas/{id:int}", async (int id, NutricionistaDb db) =>
+app.MapGet("/nutricionistas", async (NutriTECDb db) =>
 {
-    return await db.Nutricionistas.FindAsync(id)
-    is Nutricionista n
-    ? Results.Ok(n)
-    : Results.NotFound();
-
+    return await db.Nutricionistas.ToListAsync();
 });
 
-app.MapPut("/nutricionistas/{id:int}", async (int id, Nutricionista n, NutricionistaDb db) =>
+app.MapPut("/nutricionistas/{id:int}", async (int id, Nutricionista n, NutriTECDb db) =>
 {
     if (n.Cedula != id)
         return Results.BadRequest();
@@ -85,7 +333,7 @@ app.MapPut("/nutricionistas/{id:int}", async (int id, Nutricionista n, Nutricion
     return Results.Ok(nutricionista);
 });
 
-app.MapDelete("/nutricionistas/{id:int}", async (int id, NutricionistaDb db) =>
+app.MapDelete("/nutricionistas/{id:int}", async (int id, NutriTECDb db) =>
 {
     var nutricionista = await db.Nutricionistas.FindAsync(id);
 
@@ -97,58 +345,48 @@ app.MapDelete("/nutricionistas/{id:int}", async (int id, NutricionistaDb db) =>
     return Results.NoContent();
 });
 
-//Métodos para la tabla Gestión de Productos
+//Métodos para la tabla PacientesAsociados
 
-app.MapPost("/gestiondeproductos/", async (GestionProductos gpr, GestionProductosDb db) =>
+app.MapPost("/pacienteasociado/", async (PacientesAsociados p, NutriTECDb db) =>
 {
-    db.GestiondeProductos.Add(gpr);
+    db.PacienteAsociado.Add(p);
     await db.SaveChangesAsync();
 
-    return Results.Created($"/gestiondeproductos/{gpr.Codigo}", gpr);
+    return Results.Created($"/pacienteasociado/{p.CedulaNutricionista}", p);
 
 });
 
-app.MapGet("/gestiondeproductos/{id:int}", async (int id, GestionProductosDb db) =>
+app.MapGet("/pacienteasociado", async (NutriTECDb db) =>
 {
-    return await db.GestiondeProductos.FindAsync(id)
-    is GestionProductos gpr
-    ? Results.Ok(gpr)
-    : Results.NotFound();
-
+    return await db.PacienteAsociado.ToListAsync();
 });
 
-app.MapPut("/gestiondeproductos/{id:int}", async (int id, GestionProductos gpr, GestionProductosDb db) =>
+app.MapPut("/pacienteasociado/{id:int}", async (int id, PacientesAsociados p, NutriTECDb db) =>
 {
-    if (gpr.Codigo != id)
+    if (p.CedulaNutricionista != id)
         return Results.BadRequest();
 
-    var gestionProductos = await db.GestiondeProductos.FindAsync(id);
+    var pacienteasociado = await db.PacienteAsociado.FindAsync(id);
 
-    if (gestionProductos is null) return Results.NotFound();
+    if (pacienteasociado is null) return Results.NotFound();
 
-    gestionProductos.Descripcion = gpr.Descripcion;
-    gestionProductos.Porcion = gpr.Porcion;
-    gestionProductos.Energia = gpr.Energia;
-    gestionProductos.Grasa = gpr.Grasa;
-    gestionProductos.Sodio = gpr.Sodio;
-    gestionProductos.Carbohidratos = gpr.Carbohidratos;
-    gestionProductos.Proteina = gpr.Proteina;
-    gestionProductos.Vitaminas = gpr.Vitaminas;
-    gestionProductos.Calcio = gpr.Calcio;
-    gestionProductos.Hierro = gpr.Hierro;
+    pacienteasociado.CedulaNutricionista = p.CedulaNutricionista;
+    pacienteasociado.CedulaPaciente = p.CedulaPaciente;
+    pacienteasociado.PlanAsignado = p.PlanAsignado;
+    pacienteasociado.FechaPlan = p.FechaPlan;
 
     await db.SaveChangesAsync();
 
-    return Results.Ok(gestionProductos);
+    return Results.Ok(pacienteasociado);
 });
 
-app.MapDelete("/gestiondeproductos/{id:int}", async (int id, GestionProductosDb db) =>
+app.MapDelete("/pacienteasociado/{id:int}", async (int id, NutriTECDb db) =>
 {
-    var gestionProductos = await db.GestiondeProductos.FindAsync(id);
+    var pacienteasociado = await db.PacienteAsociado.FindAsync(id);
 
-    if (gestionProductos is null) return Results.NotFound();
+    if (pacienteasociado is null) return Results.NotFound();
 
-    db.GestiondeProductos.Remove(gestionProductos);
+    db.PacienteAsociado.Remove(pacienteasociado);
     await db.SaveChangesAsync();
 
     return Results.NoContent();
@@ -156,7 +394,7 @@ app.MapDelete("/gestiondeproductos/{id:int}", async (int id, GestionProductosDb 
 
 //Métodos para la tabla Gestión de Planes
 
-app.MapPost("/gestiondeplanes/", async (GestionPlanes gpl, GestionPlanesDb db) =>
+app.MapPost("/gestiondeplanes/", async (GestionPlanes gpl, NutriTECDb db) =>
 {
     db.GestiondePlanes.Add(gpl);
     await db.SaveChangesAsync();
@@ -165,16 +403,13 @@ app.MapPost("/gestiondeplanes/", async (GestionPlanes gpl, GestionPlanesDb db) =
 
 });
 
-app.MapGet("/gestiondeplanes/{id:int}", async (int id, GestionPlanesDb db) =>
+app.MapGet("/gestiondeplanes", async (NutriTECDb db) =>
 {
-    return await db.GestiondePlanes.FindAsync(id)
-    is GestionPlanes gpl
-    ? Results.Ok(gpl)
-    : Results.NotFound();
+    return await db.GestiondePlanes.ToListAsync();
 
 });
 
-app.MapPut("/gestiondeplanes/{id:int}", async (int id, GestionPlanes gpl, GestionPlanesDb db) =>
+app.MapPut("/gestiondeplanes/{id:int}", async (int id, GestionPlanes gpl, NutriTECDb db) =>
 {
     if (gpl.Id != id)
         return Results.BadRequest();
@@ -184,9 +419,9 @@ app.MapPut("/gestiondeplanes/{id:int}", async (int id, GestionPlanes gpl, Gestio
     if (gestionPlanes is null) return Results.NotFound();
 
     gestionPlanes.Desayuno = gpl.Desayuno;
-    gestionPlanes.MeriendaMañana = gpl.MeriendaMañana;
+    gestionPlanes.Merienda_Mañana = gpl.Merienda_Mañana;
     gestionPlanes.Almuerzo = gpl.Almuerzo;
-    gestionPlanes.MeriendaTarde = gpl.MeriendaTarde;
+    gestionPlanes.Merienda_Tarde = gpl.Merienda_Tarde;
     gestionPlanes.Cena = gpl.Cena;
     gestionPlanes.NombrePlan = gpl.NombrePlan;
     gestionPlanes.CedulaNutricionista = gpl.CedulaNutricionista;
@@ -197,13 +432,57 @@ app.MapPut("/gestiondeplanes/{id:int}", async (int id, GestionPlanes gpl, Gestio
     return Results.Ok(gestionPlanes);
 });
 
-app.MapDelete("/gestiondeplanes/{id:int}", async (int id, GestionPlanesDb db) =>
+app.MapDelete("/gestiondeplanes/{id:int}", async (int id, NutriTECDb db) =>
 {
     var gestionPlanes = await db.GestiondePlanes.FindAsync(id);
 
     if (gestionPlanes is null) return Results.NotFound();
 
     db.GestiondePlanes.Remove(gestionPlanes);
+    await db.SaveChangesAsync();
+
+    return Results.NoContent();
+});
+
+//Métodos para la tabla TipoPago
+
+app.MapPost("/tiposdepago/", async (TipoPago tp, NutriTECDb db) =>
+{
+    db.TiposdePago.Add(tp);
+    await db.SaveChangesAsync();
+
+    return Results.Created($"/tiposdepago/{tp.Id}", tp);
+
+});
+
+app.MapGet("/tiposdepago", async (NutriTECDb db) =>
+{
+    return await db.TiposdePago.ToListAsync();
+});
+
+app.MapPut("/tiposdepago/{id:int}", async (int id, TipoPago tp, NutriTECDb db) =>
+{
+    if (tp.Id != id)
+        return Results.BadRequest();
+
+    var tiposdepago = await db.TiposdePago.FindAsync(id);
+
+    if (tiposdepago is null) return Results.NotFound();
+
+    tiposdepago.Tipo = tp.Tipo;
+
+    await db.SaveChangesAsync();
+
+    return Results.Ok(tiposdepago);
+});
+
+app.MapDelete("/tiposdepago/{id:int}", async (int id, NutriTECDb db) =>
+{
+    var tiposdepago = await db.TiposdePago.FindAsync(id);
+
+    if (tiposdepago is null) return Results.NotFound();
+
+    db.TiposdePago.Remove(tiposdepago);
     await db.SaveChangesAsync();
 
     return Results.NoContent();

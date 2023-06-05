@@ -21,7 +21,7 @@ namespace NutriTEC.Models
         public string Distrito { get; set; }
         public string Foto { get; set; }
         public int Tarjeta { get; set; }
-        public string TipoCobro { get; set; }
+        public int TipoCobro { get; set; }
         public string Usuario { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }

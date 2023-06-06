@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\XPC\\Desktop\\NutriTEC-API\\NutriTEC-API-PG\\NutriTEC-API-PG.csproj": {}
+    "C:\\Users\\XPC\\Documents\\GitHub\\Nutri-TEC\\NutriTEC-API-PG\\NutriTEC-API-PG.csproj": {}
   },
   "projects": {
-    "C:\\Users\\XPC\\Desktop\\NutriTEC-API\\NutriTEC-API-PG\\NutriTEC-API-PG.csproj": {
+    "C:\\Users\\XPC\\Documents\\GitHub\\Nutri-TEC\\NutriTEC-API-PG\\NutriTEC-API-PG.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\XPC\\Desktop\\NutriTEC-API\\NutriTEC-API-PG\\NutriTEC-API-PG.csproj",
+        "projectUniqueName": "C:\\Users\\XPC\\Documents\\GitHub\\Nutri-TEC\\NutriTEC-API-PG\\NutriTEC-API-PG.csproj",
         "projectName": "NutriTEC-API-PG",
-        "projectPath": "C:\\Users\\XPC\\Desktop\\NutriTEC-API\\NutriTEC-API-PG\\NutriTEC-API-PG.csproj",
+        "projectPath": "C:\\Users\\XPC\\Documents\\GitHub\\Nutri-TEC\\NutriTEC-API-PG\\NutriTEC-API-PG.csproj",
         "packagesPath": "C:\\Users\\XPC\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\XPC\\Desktop\\NutriTEC-API\\NutriTEC-API-PG\\obj\\",
+        "outputPath": "C:\\Users\\XPC\\Documents\\GitHub\\Nutri-TEC\\NutriTEC-API-PG\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -45,6 +45,20 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.5, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[7.0.4, )"
+            },
+            "Polybioz.HtmlRenderer.PdfSharp.Core": {
+              "target": "Package",
+              "version": "[1.0.0, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.2.3, )"

@@ -14,6 +14,7 @@ import AsignacionPlan from "./pages/AsignacionPlan";
 import SeguimientoPaciente from "./pages/SeguimientoPaciente";
 import GenerarReporte from "./pages/generarReporte";
 import GestionAprobacion from "./pages/GestionAprobacion";
+import GestionRecetas from "./pages/gestionRecetas";
 
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
           <Route path="/productos" element={<GestionProdcutos />} />
 
           <Route path="/aprobacionproductos" element={<GestionAprobacion />} />
+          <Route path="/gestionrecetas" element={<GestionRecetas />} />
         </Routes>
       </Router>
     </>

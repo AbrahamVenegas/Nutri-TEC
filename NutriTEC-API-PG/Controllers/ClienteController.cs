@@ -43,7 +43,7 @@ namespace NutriTEC_API_PG.Controllers
             return Ok(await _context.Clientes.ToListAsync());
         }
 
-        // PUT: Se actualiza los datos
+        /*// PUT: Se actualiza los datos
         [HttpPut("Edit")]
         public async Task<ActionResult<List<Cliente>>> Put(Cliente request)
         {
@@ -73,7 +73,7 @@ namespace NutriTEC_API_PG.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(await _context.Clientes.ToListAsync());
-        }
+        }*/
 
         // DELETE: se elimina un dato
         [HttpDelete("Delete")]

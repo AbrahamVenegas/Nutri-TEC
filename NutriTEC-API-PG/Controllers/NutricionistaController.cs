@@ -65,7 +65,6 @@ namespace NutriTEC_API_PG.Controllers
             dbNutricionista.Tarjeta = request.Tarjeta;
             dbNutricionista.Tipocobro = request.Tipocobro;
             dbNutricionista.Tipocobro = request.Tipocobro;
-            dbNutricionista.Usuario = request.Usuario;
             dbNutricionista.Password = request.Password;
 
             await _context.SaveChangesAsync();

@@ -48,6 +48,4 @@ public partial class Producto
     public virtual ICollection<GestionPlane> GestionPlaneMeriendaMañanaNavigations { get; set; } = new List<GestionPlane>();
 
     public virtual ICollection<GestionPlane> GestionPlaneMeriendaTardeNavigations { get; set; } = new List<GestionPlane>();
-
-    public virtual ICollection<Recetum> Idreceta { get; set; } = new List<Recetum>();
 }

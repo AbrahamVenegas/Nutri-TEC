@@ -17,6 +17,8 @@ public partial class PostgresContext : DbContext
 
     public virtual DbSet<Administrador> Administradors { get; set; }
 
+    public virtual DbSet<AsignacionPlan> AsignacionPlans { get; set; }
+
     public virtual DbSet<Cliente> Clientes { get; set; }
 
     public virtual DbSet<Consumo> Consumos { get; set; }
@@ -25,11 +27,11 @@ public partial class PostgresContext : DbContext
 
     public virtual DbSet<GestionPlane> GestionPlanes { get; set; }
 
+    public virtual DbSet<Ingrediente> Ingredientes { get; set; }
+
     public virtual DbSet<Medida> Medidas { get; set; }
 
     public virtual DbSet<Nutricionistum> Nutricionista { get; set; }
-
-    public virtual DbSet<PacientesAsociado> PacientesAsociados { get; set; }
 
     public virtual DbSet<Producto> Productos { get; set; }
 
@@ -70,11 +72,37 @@ public partial class PostgresContext : DbContext
                 .HasMaxLength(40)
                 .HasColumnName("nombre");
             entity.Property(e => e.Password)
-                .HasMaxLength(40)
+                .HasMaxLength(200)
                 .HasColumnName("password");
             entity.Property(e => e.Usuario)
                 .HasMaxLength(40)
                 .HasColumnName("usuario");
+        });
+
+        modelBuilder.Entity<AsignacionPlan>(entity =>
+        {
+            entity.HasKey(e => new { e.Cedulapaciente, e.Planasignado }).HasName("AsignacionPlan_pkey");
+
+            entity.ToTable("AsignacionPlan");
+
+            entity.Property(e => e.Cedulapaciente).HasColumnName("cedulapaciente");
+            entity.Property(e => e.Planasignado).HasColumnName("planasignado");
+            entity.Property(e => e.Fechafin)
+                .HasMaxLength(10)
+                .HasColumnName("fechafin");
+            entity.Property(e => e.Fechainicio)
+                .HasMaxLength(10)
+                .HasColumnName("fechainicio");
+
+            entity.HasOne(d => d.CedulapacienteNavigation).WithMany(p => p.AsignacionPlans)
+                .HasForeignKey(d => d.Cedulapaciente)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_asplanxcliente");
+
+            entity.HasOne(d => d.PlanasignadoNavigation).WithMany(p => p.AsignacionPlans)
+                .HasForeignKey(d => d.Planasignado)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_asplanxplan");
         });
 
         modelBuilder.Entity<Cliente>(entity =>
@@ -91,8 +119,16 @@ public partial class PostgresContext : DbContext
             entity.Property(e => e.Apellido2)
                 .HasMaxLength(40)
                 .HasColumnName("apellido2");
+            entity.Property(e => e.Caderas)
+                .HasPrecision(5, 2)
+                .HasColumnName("caderas");
             entity.Property(e => e.CaloriasMaximas).HasColumnName("calorias_maximas");
-            entity.Property(e => e.Direccion).HasColumnName("direccion");
+            entity.Property(e => e.Cintura)
+                .HasPrecision(5, 2)
+                .HasColumnName("cintura");
+            entity.Property(e => e.Cuello)
+                .HasPrecision(5, 2)
+                .HasColumnName("cuello");
             entity.Property(e => e.Edad).HasColumnName("edad");
             entity.Property(e => e.Email)
                 .HasMaxLength(50)
@@ -102,43 +138,41 @@ public partial class PostgresContext : DbContext
                 .HasColumnName("fecha_nacimiento");
             entity.Property(e => e.Imc)
                 .HasPrecision(5, 2)
+                .HasComputedColumnSql("((peso / altura) * altura)", true)
                 .HasColumnName("imc");
-            entity.Property(e => e.Medidas).HasColumnName("medidas");
             entity.Property(e => e.Nombre)
                 .HasMaxLength(40)
                 .HasColumnName("nombre");
-            entity.Property(e => e.NombreUsuario)
-                .HasMaxLength(30)
-                .HasColumnName("nombre_usuario");
             entity.Property(e => e.PaisResidencia)
                 .HasMaxLength(50)
                 .HasColumnName("pais_residencia");
             entity.Property(e => e.Password)
-                .HasMaxLength(100)
+                .HasMaxLength(200)
                 .HasColumnName("password");
             entity.Property(e => e.Peso)
                 .HasPrecision(5, 2)
                 .HasColumnName("peso");
-
-            entity.HasOne(d => d.MedidasNavigation).WithMany(p => p.Clientes)
-                .HasForeignKey(d => d.Medidas)
-                .HasConstraintName("fk_clientexmedidas");
+            entity.Property(e => e.PorcentajeGrasa)
+                .HasPrecision(5, 2)
+                .HasColumnName("porcentaje_grasa");
+            entity.Property(e => e.PorcentajeMusculo)
+                .HasPrecision(5, 2)
+                .HasColumnName("porcentaje_musculo");
         });
 
         modelBuilder.Entity<Consumo>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("Consumo_pkey");
+            entity.HasKey(e => new { e.IdCliente, e.Fecha }).HasName("Consumo_pkey");
 
             entity.ToTable("Consumo");
 
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Almuerzo).HasColumnName("almuerzo");
-            entity.Property(e => e.Cena).HasColumnName("cena");
-            entity.Property(e => e.Desayuno).HasColumnName("desayuno");
+            entity.Property(e => e.IdCliente).HasColumnName("id_cliente");
             entity.Property(e => e.Fecha)
                 .HasMaxLength(10)
                 .HasColumnName("fecha");
-            entity.Property(e => e.IdCliente).HasColumnName("id_cliente");
+            entity.Property(e => e.Almuerzo).HasColumnName("almuerzo");
+            entity.Property(e => e.Cena).HasColumnName("cena");
+            entity.Property(e => e.Desayuno).HasColumnName("desayuno");
             entity.Property(e => e.MeriendaMañana).HasColumnName("merienda_mañana");
             entity.Property(e => e.MeriendaTarde).HasColumnName("merienda_tarde");
 
@@ -188,9 +222,9 @@ public partial class PostgresContext : DbContext
 
         modelBuilder.Entity<GestionPlane>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("GestionPlanes_pkey");
+            entity.HasKey(e => e.IdPlan).HasName("GestionPlanes_pkey");
 
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.IdPlan).HasColumnName("id_plan");
             entity.Property(e => e.Almuerzo).HasColumnName("almuerzo");
             entity.Property(e => e.Caloriastotales).HasColumnName("caloriastotales");
             entity.Property(e => e.Cedulanutricionista).HasColumnName("cedulanutricionista");
@@ -223,11 +257,31 @@ public partial class PostgresContext : DbContext
                 .HasConstraintName("fk_planxmerienda_tarde");
         });
 
+        modelBuilder.Entity<Ingrediente>(entity =>
+        {
+            entity.HasNoKey();
+
+            entity.Property(e => e.Idproducto).HasColumnName("idproducto");
+            entity.Property(e => e.Idreceta)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("idreceta");
+
+            entity.HasOne(d => d.IdproductoNavigation).WithMany()
+                .HasForeignKey(d => d.Idproducto)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_ingredientesxprducto");
+
+            entity.HasOne(d => d.IdrecetaNavigation).WithMany()
+                .HasForeignKey(d => d.Idreceta)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_ingredientesxreceta");
+        });
+
         modelBuilder.Entity<Medida>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("Medidas_pkey");
+            entity.HasKey(e => e.IdMedida).HasName("Medidas_pkey");
 
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.IdMedida).HasColumnName("id_medida");
             entity.Property(e => e.Caderas)
                 .HasPrecision(5, 2)
                 .HasColumnName("caderas");
@@ -237,7 +291,9 @@ public partial class PostgresContext : DbContext
             entity.Property(e => e.Cuello)
                 .HasPrecision(5, 2)
                 .HasColumnName("cuello");
-            entity.Property(e => e.Fecha).HasColumnName("fecha");
+            entity.Property(e => e.Fecha)
+                .HasMaxLength(10)
+                .HasColumnName("fecha");
             entity.Property(e => e.IdCliente).HasColumnName("id_cliente");
             entity.Property(e => e.PorcentajeGrasa)
                 .HasPrecision(5, 2)
@@ -245,6 +301,11 @@ public partial class PostgresContext : DbContext
             entity.Property(e => e.PorcentajeMusculo)
                 .HasPrecision(5, 2)
                 .HasColumnName("porcentaje_musculo");
+
+            entity.HasOne(d => d.IdClienteNavigation).WithMany(p => p.Medida)
+                .HasForeignKey(d => d.IdCliente)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_medidasxcliente");
         });
 
         modelBuilder.Entity<Nutricionistum>(entity =>
@@ -265,24 +326,30 @@ public partial class PostgresContext : DbContext
             entity.Property(e => e.Direccion).HasColumnName("direccion");
             entity.Property(e => e.Edad).HasColumnName("edad");
             entity.Property(e => e.Email)
-                .HasMaxLength(40)
+                .HasMaxLength(100)
                 .HasColumnName("email");
             entity.Property(e => e.FechaNacimiento)
                 .HasMaxLength(10)
                 .HasColumnName("fecha_nacimiento");
-            entity.Property(e => e.Imc).HasColumnName("imc");
+            entity.Property(e => e.Foto)
+                .HasMaxLength(200)
+                .HasColumnName("foto");
+            entity.Property(e => e.Imc)
+                .HasPrecision(5, 2)
+                .HasComputedColumnSql("((peso / altura) * altura)", true)
+                .HasColumnName("imc");
             entity.Property(e => e.Nombre)
                 .HasMaxLength(40)
                 .HasColumnName("nombre");
             entity.Property(e => e.Password)
-                .HasMaxLength(40)
+                .HasMaxLength(200)
                 .HasColumnName("password");
             entity.Property(e => e.Peso).HasColumnName("peso");
-            entity.Property(e => e.Tarjeta).HasColumnName("tarjeta");
+            entity.Property(e => e.Tarjeta)
+                .HasMaxLength(16)
+                .IsFixedLength()
+                .HasColumnName("tarjeta");
             entity.Property(e => e.Tipocobro).HasColumnName("tipocobro");
-            entity.Property(e => e.Usuario)
-                .HasMaxLength(40)
-                .HasColumnName("usuario");
 
             entity.HasOne(d => d.DireccionNavigation).WithMany(p => p.Nutricionista)
                 .HasForeignKey(d => d.Direccion)
@@ -293,32 +360,25 @@ public partial class PostgresContext : DbContext
                 .HasForeignKey(d => d.Tipocobro)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_nutrixpago");
-        });
 
-        modelBuilder.Entity<PacientesAsociado>(entity =>
-        {
-            entity.HasKey(e => new { e.Cedulanutricionista, e.Cedulapaciente }).HasName("PacienteAsociados_pkey");
-
-            entity.Property(e => e.Cedulanutricionista).HasColumnName("cedulanutricionista");
-            entity.Property(e => e.Cedulapaciente).HasColumnName("cedulapaciente");
-            entity.Property(e => e.Fechaplan)
-                .HasMaxLength(10)
-                .HasColumnName("fechaplan");
-            entity.Property(e => e.Planasignado).HasColumnName("planasignado");
-
-            entity.HasOne(d => d.CedulanutricionistaNavigation).WithMany(p => p.PacientesAsociados)
-                .HasForeignKey(d => d.Cedulanutricionista)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("fk_pacientesxnutri");
-
-            entity.HasOne(d => d.CedulapacienteNavigation).WithMany(p => p.PacientesAsociados)
-                .HasForeignKey(d => d.Cedulapaciente)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("fk_pacientesasociados");
-
-            entity.HasOne(d => d.PlanasignadoNavigation).WithMany(p => p.PacientesAsociados)
-                .HasForeignKey(d => d.Planasignado)
-                .HasConstraintName("fk_pacientesxplan");
+            entity.HasMany(d => d.Cedulapacientes).WithMany(p => p.Cedulanutricionista)
+                .UsingEntity<Dictionary<string, object>>(
+                    "AsociacionCliente",
+                    r => r.HasOne<Cliente>().WithMany()
+                        .HasForeignKey("Cedulapaciente")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("fk_asociacionclientexcliente"),
+                    l => l.HasOne<Nutricionistum>().WithMany()
+                        .HasForeignKey("Cedulanutricionista")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("fk_asociacionclientexnutri"),
+                    j =>
+                    {
+                        j.HasKey("Cedulanutricionista", "Cedulapaciente").HasName("AsociacionCliente_pkey");
+                        j.ToTable("AsociacionCliente");
+                        j.IndexerProperty<int>("Cedulanutricionista").HasColumnName("cedulanutricionista");
+                        j.IndexerProperty<int>("Cedulapaciente").HasColumnName("cedulapaciente");
+                    });
         });
 
         modelBuilder.Entity<Producto>(entity =>
@@ -371,27 +431,6 @@ public partial class PostgresContext : DbContext
             entity.Property(e => e.Nombrereceta)
                 .HasMaxLength(100)
                 .HasColumnName("nombrereceta");
-
-            entity.HasMany(d => d.Idproductos).WithMany(p => p.Idreceta)
-                .UsingEntity<Dictionary<string, object>>(
-                    "Ingrediente",
-                    r => r.HasOne<Producto>().WithMany()
-                        .HasForeignKey("Idproducto")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("fk_ingredientesxproductos"),
-                    l => l.HasOne<Recetum>().WithMany()
-                        .HasForeignKey("Idreceta")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("fk_ingredientesxreceta"),
-                    j =>
-                    {
-                        j.HasKey("Idreceta", "Idproducto").HasName("pk_ingredientes");
-                        j.ToTable("Ingredientes");
-                        j.IndexerProperty<int>("Idreceta")
-                            .ValueGeneratedOnAdd()
-                            .HasColumnName("idreceta");
-                        j.IndexerProperty<int>("Idproducto").HasColumnName("idproducto");
-                    });
         });
 
         modelBuilder.Entity<TipoPago>(entity =>

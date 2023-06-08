@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 namespace NutriTEC_API_PG.Models;
 
@@ -24,26 +23,23 @@ public partial class Nutricionistum
 
     public int Altura { get; set; }
 
-    public int Imc { get; set; }
-
-    public int Tarjeta { get; set; }
-
-    public int Tipocobro { get; set; }
-
-    public string Usuario { get; set; } = null!;
-
-    public string Password { get; set; } = null!;
-
-    public string Email { get; set; } = null!;
+    public decimal? Imc { get; set; }
 
     public int Direccion { get; set; }
 
-    [JsonIgnore]
-    public virtual Direccion? DireccionNavigation { get; set; }
+    public string? Foto { get; set; }
 
-    [JsonIgnore]
-    public virtual ICollection<PacientesAsociado>? PacientesAsociados { get; set; }
+    public string Tarjeta { get; set; } = null!;
 
-    [JsonIgnore]
-    public virtual TipoPago? TipocobroNavigation { get; set; }
+    public int Tipocobro { get; set; }
+
+    public string Email { get; set; } = null!;
+
+    public string Password { get; set; } = null!;
+
+    public virtual Direccion DireccionNavigation { get; set; } = null!;
+
+    public virtual TipoPago TipocobroNavigation { get; set; } = null!;
+
+    public virtual ICollection<Cliente> Cedulapacientes { get; set; } = new List<Cliente>();
 }

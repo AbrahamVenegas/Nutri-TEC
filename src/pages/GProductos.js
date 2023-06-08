@@ -17,7 +17,7 @@ const GProductos = () => {
     const mostrarProductos = async () => {
         async function fetchData() {
             try {
-                const response = await fetch(''); //Falta el link
+                const response = await fetch('https://nutritec-api-postgres.azurewebsites.net/api/Producto/Get');
                 const data = await response.json();
                 setProductos(data);
             } catch (error) {
@@ -32,14 +32,14 @@ const GProductos = () => {
     }, [])
 
     //Metodo POST
-    const guardarProductos = async (puesto) => {
+    const guardarProductos = async (productos) => {
 
-        const datosproductos = await fetch("", { //Falta el link
+        const datosproductos = await fetch("https://nutritec-api-postgres.azurewebsites.net/api/Producto/Post", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify(puesto)
+            body: JSON.stringify(productos)
         })
         toast.success("Dato añadido con exito")
 
@@ -50,14 +50,14 @@ const GProductos = () => {
     }
 
     //Metodo PUT
-    const editarProductos = async (puesto) => {
+    const editarProductos = async (productos) => {
 
-        const datosproductos = await fetch("", { //Falta el link
+        const datosproductos = await fetch("https://nutritec-api-postgres.azurewebsites.net/api/Producto/Edit", {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify(puesto)
+            body: JSON.stringify(productos)
         })
         toast.success("Dato editado con exito")
 
@@ -68,21 +68,21 @@ const GProductos = () => {
     }
 
     //Metodo DELETE
-    const eliminarProductos = async (cedula) => {
+    const eliminarProductos = async (codigoBarras) => {
 
         var respuesta = window.confirm("Esta seguro que quiere eliminar el dato?")
 
         if (!respuesta) {
             return;
-        }
+        } else {
+            const datosproductos = await fetch("https://nutritec-api-postgres.azurewebsites.net/api/Producto/Delete?codigobarras=" + codigoBarras, {
+                method: 'DELETE',
+            })
+            toast.success("Dato borrado con exito")
 
-        const datosproductos = await fetch("", { //Falta el link
-            method: 'DELETE',
-        })
-        toast.success("Dato borrado con exito")
-
-        if (datosproductos.ok) {
-            mostrarProductos();
+            if (datosproductos.ok) {
+                mostrarProductos();
+            }
         }
     }
 

@@ -23,7 +23,7 @@ const TablaSeguimiento = ({ data, setEditar, mostrarModal, setMostrarModal }) =>
                 {
                     (data.length < 1) ? (
                         <tr>
-                            <td colSpan="3">Sin registros</td>
+                            <td colSpan="4">Sin registros</td>
                         </tr>
                     ) : (
                         data.map((item) => (

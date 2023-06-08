@@ -44,7 +44,16 @@ export const LoginNutri = () => {
                         toast.success('Login exitoso');
                         usenavigate('/GProductos')
                     } else {
-                        toast.error('Credenciales incorrectas');
+                        if (resp.password === password) { //encryptPassword(password)
+                            toast.success('Login exitoso');
+
+                            localStorage.setItem('cedula', resp.cedula);
+                            localStorage.setItem('password', resp.password);    
+
+                            usenavigate('/GProductos') //Falta pagina de inicio
+                        } else {
+                            toast.error('Credenciales incorrectas');
+                        }
                     }
                 }
             }).catch((err) => {

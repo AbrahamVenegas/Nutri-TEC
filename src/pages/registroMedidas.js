@@ -3,212 +3,139 @@ import { Table, Button, Modal, Form } from 'react-bootstrap';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+
 const RegistroMedidas = () => {
-    const [planillas, setPlanillas] = useState([]);
-    const [descripcion, setDescripcion] = useState('');
-    const [medidas, setMedidas] = useState({
-        cintura: '',
-        cuello: '',
-        caderas: '',
-        porcentajeMusculo: '',
-        porcentajeGrasa: '',
-        fecha: ''
-    });
-    const [planillaId, setPlanillaId] = useState(null);
+    const [medidas, setMedidas] = useState([]);
+    const [id_cliente, setIDCliente] = useState('');
+    const [cintura, setCintura] = useState('');
+    const [cuello, setCuello] = useState('');
+    const [caderas, setCaderas] = useState('');
+    const [porcentaje_musculo, setPorcentajeMusculo] = useState('');
+    const [porcentaje_grasa, setPorcentajeGrasa] = useState('');
+    const [fecha, setFecha] = useState('');
+
+    
+    const [medidaId, setProductoId] = useState(null);
     const [showModal, setShowModal] = useState(false);
 
+    localStorage.setItem('storagePrueba', "prueba");
+
+    // Método GET
+    const mostrarProductos = async () => {
+        const response = await fetch("https://localhost:7165/medida");
+
+        if (response.ok) {
+            const medidas = await response.json();
+            console.log(medidas);
+            setMedidas(medidas);
+        } else {
+            console.log("Hubo un error");
+        }
+    };
+
     useEffect(() => {
-        // Obtener las planillas mediante una solicitud GET al API
-        fetchPlanillas();
+        mostrarProductos();
     }, []);
 
-    const fetchPlanillas = async () => {
-        try {
-            const response = await fetch('URL_DEL_API/planillas');
-            const data = await response.json();
-            setPlanillas(data);
-        } catch (error) {
-            console.error(error);
+    // Método POST
+    const agregarProducto = () => {
+        
+        if (!cintura || !cuello || !caderas || !porcentaje_musculo || !porcentaje_grasa) {
+            alert('Debes completar todos los campos');
+            return;
         }
+
+        fetch('https://localhost:7165/medida', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id_cliente:1,
+                cintura:cintura,
+                cuello:cuello,
+                caderas:caderas,
+                porcentaje_musculo:porcentaje_musculo,
+                porcentaje_grasa:porcentaje_grasa,
+                fecha:fecha
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                const nuevoProducto = {
+                    id_cliente:data.id_cliente,
+                    cintura:data.cintura,
+                    cuello:data.cuello,
+                    caderas:data.caderas,
+                    porcentaje_musculo:data.porcentaje_musculo,
+                    porcentaje_grasa:data.porcentaje_grasa,
+                    fecha:data.fecha
+                };
+                setMedidas([...medidas, nuevoProducto]);
+                mostrarProductos();
+                setIDCliente('');
+                setCintura('');
+                setCuello('');
+                setCaderas('');
+                setPorcentajeGrasa('');
+                setPorcentajeMusculo('');
+                setFecha('');
+            })
+            .catch(error => console.error(error));
     };
 
-    const agregarPlanilla = async () => {
-        try {
-            const response = await fetch('URL_DEL_API/planillas', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    cintura: medidas.cintura,
-                    cuello: medidas.cuello,
-                    caderas: medidas.caderas,
-                    porcentajeMusculo: medidas.porcentajeMusculo,
-                    porcentajeGrasa: medidas.porcentajeGrasa,
-                    fecha: medidas.fecha
-                })
-            });
-            const data = await response.json();
-            if (response.ok) {
-                setPlanillas([...planillas, data]);
-                toast.success('Planilla agregada exitosamente');
-                handleModalClose();
-            } else {
-                toast.error('Error al agregar la planilla');
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    };
 
-    const editarPlanilla = async () => {
-        try {
-            const response = await fetch(`URL_DEL_API/planillas/${planillaId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    cintura: medidas.cintura,
-                    cuello: medidas.cuello,
-                    caderas: medidas.caderas,
-                    porcentajeMusculo: medidas.porcentajeMusculo,
-                    porcentajeGrasa: medidas.porcentajeGrasa,
-                    fecha: medidas.fecha
-                })
-            });
-            const data = await response.json();
-            if (response.ok) {
-                const updatedPlanillas = planillas.map(planilla => {
-                    if (planilla.id === planillaId) {
-                        return {
-                            ...planilla,
-                            cintura: data.cintura,
-                            cuello: data.cuello,
-                            caderas: data.caderas,
-                            porcentajeMusculo: data.porcentajeMusculo,
-                            porcentajeGrasa: data.porcentajeGrasa,
-                            fecha: data.fecha
-                        };
-                    }
-                    return planilla;
-                });
-                setPlanillas(updatedPlanillas);
-                toast.success('Planilla actualizada exitosamente');
-                handleModalClose();
-            } else {
-                toast.error('Error al actualizar la planilla');
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    const eliminarPlanilla = async (id) => {
-        try {
-            const response = await fetch(`URL_DEL_API/planillas/${id}`, {
-                method: 'DELETE'
-            });
-            if (response.ok) {
-                const updatedPlanillas = planillas.filter(planilla => planilla.id !== id);
-                setPlanillas(updatedPlanillas);
-                toast.success('Planilla eliminada exitosamente');
-            } else {
-                toast.error('Error al eliminar la planilla');
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    const handleEditar = (id) => {
-        const planillaEncontrado = planillas.find(planilla => planilla.id === id);
-        setMedidas({
-            cintura: planillaEncontrado.cintura,
-            cuello: planillaEncontrado.cuello,
-            caderas: planillaEncontrado.caderas,
-            porcentajeMusculo: planillaEncontrado.porcentajeMusculo,
-            porcentajeGrasa: planillaEncontrado.porcentajeGrasa,
-            fecha: planillaEncontrado.fecha
-        });
-        setPlanillaId(id);
-        setShowModal(true);
-    };
 
     const handleModalClose = () => {
         setShowModal(false);
-        setMedidas({
-            cintura: '',
-            cuello: '',
-            caderas: '',
-            porcentajeMusculo: '',
-            porcentajeGrasa: '',
-            fecha: ''
-        });
-        setPlanillaId(null);
+        setIDCliente('');
+        setCintura('');
+        setCuello('');
+        setCaderas('');
+        setPorcentajeGrasa('');
+        setPorcentajeMusculo('');
+        setFecha('');
+        setProductoId(null);
     };
 
     return (
+        <>
         <div className="container">
-            <h2 className="my-4">Gestión de Planillas</h2>
+            <h2 className="my-4">Gestión de Productos</h2>
             <div className="row mb-3">
                 <div className="col-md-6">
-                    <Form>
-                        <Form.Group controlId="cintura">
-                            <Form.Label>Cintura:</Form.Label>
-                            <Form.Control
-                                type="number"
-                                value={medidas.cintura}
-                                onChange={e => setMedidas({ ...medidas, cintura: e.target.value })}
-                            />
-                        </Form.Group>
-                        <Form.Group controlId="cuello">
-                            <Form.Label>Cuello:</Form.Label>
-                            <Form.Control
-                                type="number"
-                                value={medidas.cuello}
-                                onChange={e => setMedidas({ ...medidas, cuello: e.target.value })}
-                            />
-                        </Form.Group>
-                        <Form.Group controlId="caderas">
-                            <Form.Label>Caderas:</Form.Label>
-                            <Form.Control
-                                type="number"
-                                value={medidas.caderas}
-                                onChange={e => setMedidas({ ...medidas, caderas: e.target.value })}
-                            />
-                        </Form.Group>
-                        <Form.Group controlId="porcentajeMusculo">
-                            <Form.Label>Porcentaje de Músculo:</Form.Label>
-                            <Form.Control
-                                type="number"
-                                value={medidas.porcentajeMusculo}
-                                onChange={e => setMedidas({ ...medidas, porcentajeMusculo: e.target.value })}
-                            />
-                        </Form.Group>
-                        <Form.Group controlId="porcentajeGrasa">
-                            <Form.Label>Porcentaje de Grasa:</Form.Label>
-                            <Form.Control
-                                type="select"
-                                value={medidas.porcentajeGrasa}
-                                onChange={e => setMedidas({ ...medidas, porcentajeGrasa: e.target.value })}
-                            />
-                        </Form.Group>
-                        <Form.Group controlId="fecha">
-                            <Form.Label>Fecha:</Form.Label>
-                            <Form.Control
-                                type="date"
-                                value={medidas.fecha}
-                                onChange={e => setMedidas({ ...medidas, fecha: e.target.value })}
-                            />
-                        </Form.Group>
-                        
-                        {planillaId === null ? (
-                            <Button variant="primary" onClick={agregarPlanilla}>Agregar Planilla</Button>
-                        ) : (
-                            <Button variant="primary" onClick={editarPlanilla}>Editar Planilla</Button>
-                        )}
-                    </Form>
+                    <Form.Group controlId="cintura">
+                        <Form.Label>Cintura:</Form.Label>
+                        <Form.Control type="number" value={cintura} onChange={e => setCintura(e.target.value)} />
+                    </Form.Group>
+                    <Form.Group controlId="cuello">
+                        <Form.Label>Cuello:</Form.Label>
+                        <Form.Control type="number" value={cuello} onChange={e => setCuello(e.target.value)} />
+                    </Form.Group>
+                    <Form.Group controlId="caderas">
+                        <Form.Label>Caderas:</Form.Label>
+                        <Form.Control type="number" value={caderas} onChange={e => setCaderas(e.target.value)} />
+                    </Form.Group>
+                    <Form.Group controlId="porcentajeMusculo">
+                        <Form.Label>Porcentaje de musculo:</Form.Label>
+                        <Form.Control type="number" /* maxLength={50} */ value={porcentaje_musculo} onChange={e => setPorcentajeMusculo(e.target.value)} />
+                        {/* <small>{porcentaje_musculo.length}/50 caracteres</small> */}
+                    </Form.Group>
+                    <Form.Group controlId="porcentajeGrasa">
+                        <Form.Label>Porcentaje de grasa:</Form.Label>
+                        <Form.Control type="number" value={porcentaje_grasa} onChange={e => setPorcentajeGrasa(e.target.value)} />
+                    </Form.Group>
+                    <Form.Group controlId="fecha">
+                        <Form.Label>Fecha:</Form.Label>
+                        <Form.Control type="date" value={fecha} onChange={e => setFecha(e.target.value)} />
+                    </Form.Group>
+                </div>
+                <div className="col-md-3 d-flex align-items-end">
+                    {medidaId === null ? (
+                        <Button variant="primary" onClick={agregarProducto}>Agregar medida</Button>
+                    ) : (
+                        <Button variant="primary" onClick={() => setShowModal(true)}>Editar Producto</Button>
+                    )}
                 </div>
             </div>
             <Table striped bordered hover>
@@ -221,48 +148,27 @@ const RegistroMedidas = () => {
                         <th>Porcentaje de músculo</th>
                         <th>Porcentaje de grasa</th>
                         <th>Fecha</th>
-                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {planillas.map((planilla) => (
-                        <tr key={planilla.id}>
-                            <td>{planilla.id}</td>
-                            <td>{planilla.cintura}</td>
-                            <td>{planilla.cuello}</td>
-                            <td>{planilla.caderas}</td>
-                            <td>{planilla.porcentajeMusculo}</td>
-                            <td>{planilla.porcentajeGrasa}</td>
-                            <td>{planilla.fecha}</td>
-                            <td>
-                                <Button variant="danger" onClick={() => eliminarPlanilla(planilla.id)}>Eliminar</Button>
-                                <Button variant="primary" onClick={() => handleEditar(planilla.id)}>Editar</Button>
-                            </td>
+                    {medidas.map((medida, index) => (
+                        <tr key={index}>
+                            <td>{medida.id_cliente}</td>
+                            <td>{medida.cintura}</td>
+                            <td>{medida.cuello}</td>
+                            <td>{medida.caderas}</td>
+                            <td>{medida.porcentaje_musculo}</td>
+                            <td>{medida.porcentaje_grasa}</td>
+                            <td>{medida.fecha}</td>
                         </tr>
                     ))}
                 </tbody>
             </Table>
 
-            <Modal show={showModal} onHide={handleModalClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Editar Planilla</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form>
-                        <Form.Group controlId="descripcion">
-                            <Form.Label>Descripción:</Form.Label>
-                            <Form.Control type="text" maxLength={50} value={descripcion} onChange={e => setDescripcion(e.target.value)} />
-                        </Form.Group>
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleModalClose}>Cancelar</Button>
-                    <Button variant="primary" onClick={editarPlanilla}>Guardar Cambios</Button>
-                </Modal.Footer>
-            </Modal>
+           
         </div>
+        </>
     );
 };
 
-export default RegistroMedidas;
-
+export default RegistroMedidas;  

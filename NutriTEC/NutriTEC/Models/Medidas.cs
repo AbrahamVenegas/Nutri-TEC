@@ -4,7 +4,7 @@ namespace NutriTEC.Models
 {
     public class Medidas
     {
-        public DateTime Fecha { get; set; }
+        public string Fecha { get; set; }
         [Key]
         public int Id_cliente { get; set; }
 

@@ -9,6 +9,17 @@ function GenerarReporte() {
   const [endDate, setEndDate] = useState('');
   const [data, setData] = useState([]);
 
+  const prueba = localStorage.getItem('storagePrueba');
+
+
+  /* const [id_cliente, setIDCliente] = useState('');
+  const [cintura, setCintura] = useState('');
+  const [cuello, setCuello] = useState('');
+  const [caderas, setCaderas] = useState('');
+  const [porcentaje_musculo, setPorcentajeMusculo] = useState('');
+  const [porcentaje_grasa, setPorcentajeGrasa] = useState('');
+  const [fecha, setFecha] = useState(''); */
+
   const filtrarDatos = () => {
     const filteredData = data.filter((item) => {
       const fecha = new Date(item.fecha);
@@ -20,7 +31,10 @@ function GenerarReporte() {
   const GenerarDocumentoPDF = () => (
     <Document>
       <Page>
+      <Image src={LogoImage} style={{marginTop: 20, marginBottom: 40 }} />
         <View>
+          
+          <Text style={{ fontSize: 14, marginBottom: 10 }}></Text>
           <Text style={{ fontSize: 14, marginBottom: 10 }}>Reporte de medidas</Text>
           {filtrarDatos().map((item) => {
             const fecha = new Date(item.fecha);
@@ -32,7 +46,7 @@ function GenerarReporte() {
             );
           })}
         </View>
-        <Image src={LogoImage} style={{marginTop: 20 }} />
+        
       </Page>
     </Document>
   );
@@ -55,6 +69,7 @@ function GenerarReporte() {
   }, []);
 
   return (
+    console.log(prueba),
     <Container>
       <h1>Generador de reportes</h1>
       <Form>
@@ -64,12 +79,12 @@ function GenerarReporte() {
         </Form.Group>
         <Form.Group controlId="endDate">
           <Form.Label>Fecha final:</Form.Label>
-          <Form.Control type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+          <Form.Control type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} style={{ marginBottom: '20px' }} />
         </Form.Group>
       </Form>
       <PDFDownloadLink document={<GenerarDocumentoPDF />} fileName="ReporteMedidas.pdf">
         {({ blob, url, loading, error }) =>
-          loading ? 'Generando PDF...' : <Button>Generar reporte en PDF</Button>
+          <Button>Generar reporte en PDF</Button>
         }
       </PDFDownloadLink>
     </Container>

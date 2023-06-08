@@ -43,7 +43,7 @@ namespace NutriTEC_API_PG.Controllers
             return Ok(await _context.Clientes.ToListAsync());
         }
 
-        /*// PUT: Se actualiza los datos
+        // PUT: Se actualiza los datos
         [HttpPut("Edit")]
         public async Task<ActionResult<List<Cliente>>> Put(Cliente request)
         {
@@ -62,18 +62,19 @@ namespace NutriTEC_API_PG.Controllers
             dbCliente.Altura = request.Altura;
             dbCliente.Imc = request.Imc;
             dbCliente.PaisResidencia = request.PaisResidencia;
+            dbCliente.Cintura = request.Cintura;
+            dbCliente.Cuello = request.Cuello;
+            dbCliente.Caderas = request.Caderas;
+            dbCliente.PorcentajeMusculo = request.PorcentajeMusculo;
+            dbCliente.PorcentajeGrasa = request.PorcentajeGrasa;
             dbCliente.CaloriasMaximas = request.CaloriasMaximas;
             dbCliente.Email = request.Email;
             dbCliente.Password = request.Password;
-            dbCliente.NombreUsuario = request.NombreUsuario;
-            dbCliente.Medidas = request.Medidas;
-            dbCliente.Direccion = request.Direccion;
-
 
             await _context.SaveChangesAsync();
 
             return Ok(await _context.Clientes.ToListAsync());
-        }*/
+        }
 
         // DELETE: se elimina un dato
         [HttpDelete("Delete")]

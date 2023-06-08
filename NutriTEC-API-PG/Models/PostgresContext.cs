@@ -19,6 +19,8 @@ public partial class PostgresContext : DbContext
 
     public virtual DbSet<AsignacionPlan> AsignacionPlans { get; set; }
 
+    public virtual DbSet<AsociacionCliente> AsociacionClientes { get; set; }
+
     public virtual DbSet<Cliente> Clientes { get; set; }
 
     public virtual DbSet<Consumo> Consumos { get; set; }
@@ -103,6 +105,26 @@ public partial class PostgresContext : DbContext
                 .HasForeignKey(d => d.Planasignado)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_asplanxplan");
+        });
+
+        modelBuilder.Entity<AsociacionCliente>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("AsociacionCliente");
+
+            entity.Property(e => e.Cedulanutricionista).HasColumnName("cedulanutricionista");
+            entity.Property(e => e.Cedulapaciente).HasColumnName("cedulapaciente");
+
+            entity.HasOne(d => d.CedulanutricionistaNavigation).WithMany()
+                .HasForeignKey(d => d.Cedulanutricionista)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_asociacionclientexnutri");
+
+            entity.HasOne(d => d.CedulapacienteNavigation).WithMany()
+                .HasForeignKey(d => d.Cedulapaciente)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_asociacionclientexcliente");
         });
 
         modelBuilder.Entity<Cliente>(entity =>
@@ -360,25 +382,6 @@ public partial class PostgresContext : DbContext
                 .HasForeignKey(d => d.Tipocobro)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_nutrixpago");
-
-            entity.HasMany(d => d.Cedulapacientes).WithMany(p => p.Cedulanutricionista)
-                .UsingEntity<Dictionary<string, object>>(
-                    "AsociacionCliente",
-                    r => r.HasOne<Cliente>().WithMany()
-                        .HasForeignKey("Cedulapaciente")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("fk_asociacionclientexcliente"),
-                    l => l.HasOne<Nutricionistum>().WithMany()
-                        .HasForeignKey("Cedulanutricionista")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("fk_asociacionclientexnutri"),
-                    j =>
-                    {
-                        j.HasKey("Cedulanutricionista", "Cedulapaciente").HasName("AsociacionCliente_pkey");
-                        j.ToTable("AsociacionCliente");
-                        j.IndexerProperty<int>("Cedulanutricionista").HasColumnName("cedulanutricionista");
-                        j.IndexerProperty<int>("Cedulapaciente").HasColumnName("cedulapaciente");
-                    });
         });
 
         modelBuilder.Entity<Producto>(entity =>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace NutriTEC_API_PG.Models;
 
@@ -9,7 +10,9 @@ public partial class Ingrediente
 
     public int Idproducto { get; set; }
 
-    public virtual Producto IdproductoNavigation { get; set; } = null!;
+    [JsonIgnore]
+    public virtual Producto IdproductoNavigation { get; set; }
 
-    public virtual Recetum IdrecetaNavigation { get; set; } = null!;
+    [JsonIgnore]
+    public virtual Recetum IdrecetaNavigation { get; set; }
 }

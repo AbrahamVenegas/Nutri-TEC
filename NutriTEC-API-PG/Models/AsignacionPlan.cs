@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace NutriTEC_API_PG.Models;
 
@@ -13,7 +14,9 @@ public partial class AsignacionPlan
 
     public string? Fechafin { get; set; }
 
-    public virtual Cliente CedulapacienteNavigation { get; set; } = null!;
+    [JsonIgnore]
+    public virtual Cliente CedulapacienteNavigation { get; set; }
 
-    public virtual GestionPlane PlanasignadoNavigation { get; set; } = null!;
+    [JsonIgnore]
+    public virtual GestionPlane PlanasignadoNavigation { get; set; }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace NutriTEC_API_PG.Models;
 
@@ -21,5 +22,6 @@ public partial class Medida
 
     public decimal? PorcentajeGrasa { get; set; }
 
-    public virtual Cliente IdClienteNavigation { get; set; } = null!;
+    [JsonIgnore]
+    public virtual Cliente IdClienteNavigation { get; set; }
 }

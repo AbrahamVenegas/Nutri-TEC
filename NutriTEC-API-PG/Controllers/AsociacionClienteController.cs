@@ -17,16 +17,16 @@ namespace NutriTEC_API_PG.Controllers
 
         // GET: Se muestran los datos obtenidos 
         [HttpGet("Get")]
-        public async Task<ActionResult<List<PacientesAsociado>>> Get()
+        public async Task<ActionResult<List<AsociacionCliente>>> Get()
         {
-            return Ok(await _context.PacientesAsociados.ToListAsync());
+            return Ok(await _context.AsociacionClientes.ToListAsync());
         }
 
         // GET by id: Se muestran los datos obtenidos por ID 
         [HttpGet("Get_Id_AsociacionCliente")]
-        public async Task<ActionResult<List<PacientesAsociado>>> Get(int id_cliente_asociado)
+        public async Task<ActionResult<List<AsociacionCliente>>> Get(int id_cliente_asociado)
         {
-            var dbAsociacionCliente = await _context.PacientesAsociados.FindAsync(id_cliente_asociado);
+            var dbAsociacionCliente = await _context.AsociacionClientes.FindAsync(id_cliente_asociado);
             if (dbAsociacionCliente == null)
             {
                 return BadRequest("Clientes Asociados no encontrado");
@@ -36,44 +36,26 @@ namespace NutriTEC_API_PG.Controllers
 
         // POST: Se guardan los datos
         [HttpPost("Post")]
-        public async Task<ActionResult<List<PacientesAsociado>>> Post(PacientesAsociado clienteasociado)
+        public async Task<ActionResult<List<AsociacionCliente>>> Post(AsociacionCliente clienteasociado)
         {
-            _context.PacientesAsociados.Add(clienteasociado);
+            _context.AsociacionClientes.Add(clienteasociado);
             await _context.SaveChangesAsync();
-            return Ok(await _context.PacientesAsociados.ToListAsync());
-        }
-
-        // PUT: Se actualiza los datos
-        [HttpPut("Edit")]
-        public async Task<ActionResult<List<PacientesAsociado>>> Put(PacientesAsociado request)
-        {
-            var dbAsociacionCliente = await _context.PacientesAsociados.FindAsync(request.Cedulanutricionista);
-            if (dbAsociacionCliente == null)
-            {
-                return BadRequest("Clientes Asociados no encontrado");
-            }
-
-            dbAsociacionCliente.Planasignado = request.Planasignado;
-            dbAsociacionCliente.Fechaplan = request.Fechaplan;
-
-            await _context.SaveChangesAsync();
-
-            return Ok(await _context.PacientesAsociados.ToListAsync());
+            return Ok(await _context.AsociacionClientes.ToListAsync());
         }
 
         // DELETE: se elimina un dato
         [HttpDelete("Delete")]
-        public async Task<ActionResult<List<PacientesAsociado>>> Delete(int id_cliente_asociado)
+        public async Task<ActionResult<List<AsociacionCliente>>> Delete(int id_cliente_asociado)
         {
-            var dbAsociacionCliente = await _context.PacientesAsociados.FindAsync(id_cliente_asociado);
+            var dbAsociacionCliente = await _context.AsociacionClientes.FindAsync(id_cliente_asociado);
             if (dbAsociacionCliente == null)
             {
                 return BadRequest("Clientes Asociados no encontrado");
             }
-            _context.PacientesAsociados.Remove(dbAsociacionCliente);
+            _context.AsociacionClientes.Remove(dbAsociacionCliente);
             await _context.SaveChangesAsync();
 
-            return Ok(await _context.PacientesAsociados.ToListAsync());
+            return Ok(await _context.AsociacionClientes.ToListAsync());
         }
     }
 }

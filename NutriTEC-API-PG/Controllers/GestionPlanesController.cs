@@ -47,7 +47,7 @@ namespace NutriTEC_API_PG.Controllers
         [HttpPut("Edit")]
         public async Task<ActionResult<List<GestionPlane>>> Put(GestionPlane request)
         {
-            var dbGestionPlanes = await _context.GestionPlanes.FindAsync(request.Id);
+            var dbGestionPlanes = await _context.GestionPlanes.FindAsync(request.IdPlan);
             if (dbGestionPlanes == null)
             {
                 return BadRequest("Gestion de Planes no encontrados");

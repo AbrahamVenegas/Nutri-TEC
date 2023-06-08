@@ -67,9 +67,9 @@ namespace NutriTEC_API_PG.Controllers
 
         // DELETE: se elimina un dato
         [HttpDelete("Delete")]
-        public async Task<ActionResult<List<Administrador>>> Delete(int Cedula)
+        public async Task<ActionResult<List<Administrador>>> Delete(int cedula_admin)
         {
-            var dbAdministrador = await _context.Administradors.FindAsync(Cedula);
+            var dbAdministrador = await _context.Administradors.FindAsync(cedula_admin);
             if (dbAdministrador == null)
             {
                 return BadRequest("Administrador no encontrado");

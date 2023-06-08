@@ -53,3 +53,13 @@ C:\Users\XPC\Documents\GitHub\Nutri-TEC\NutriTEC-API-PG\bin\Debug\net6.0\System.
 C:\Users\XPC\Documents\GitHub\Nutri-TEC\NutriTEC-API-PG\bin\Debug\net6.0\System.Text.Encodings.Web.dll
 C:\Users\XPC\Documents\GitHub\Nutri-TEC\NutriTEC-API-PG\bin\Debug\net6.0\System.Text.Json.dll
 C:\Users\XPC\Documents\GitHub\Nutri-TEC\NutriTEC-API-PG\bin\Debug\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
+C:\Users\pepev\OneDrive\Documentos\GitHub\Nutri-TEC\NutriTEC-API-PG\obj\Debug\net6.0\NutriTEC-API-PG.csproj.AssemblyReference.cache
+C:\Users\pepev\OneDrive\Documentos\GitHub\Nutri-TEC\NutriTEC-API-PG\obj\Debug\net6.0\NutriTEC-API-PG.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\pepev\OneDrive\Documentos\GitHub\Nutri-TEC\NutriTEC-API-PG\obj\Debug\net6.0\NutriTEC-API-PG.AssemblyInfoInputs.cache
+C:\Users\pepev\OneDrive\Documentos\GitHub\Nutri-TEC\NutriTEC-API-PG\obj\Debug\net6.0\NutriTEC-API-PG.AssemblyInfo.cs
+C:\Users\pepev\OneDrive\Documentos\GitHub\Nutri-TEC\NutriTEC-API-PG\obj\Debug\net6.0\NutriTEC-API-PG.csproj.CoreCompileInputs.cache
+C:\Users\pepev\OneDrive\Documentos\GitHub\Nutri-TEC\NutriTEC-API-PG\obj\Debug\net6.0\NutriTEC-API-PG.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\pepev\OneDrive\Documentos\GitHub\Nutri-TEC\NutriTEC-API-PG\obj\Debug\net6.0\NutriTEC-API-PG.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\pepev\OneDrive\Documentos\GitHub\Nutri-TEC\NutriTEC-API-PG\obj\Debug\net6.0\NutriTEC-API-PG.dll
+C:\Users\pepev\OneDrive\Documentos\GitHub\Nutri-TEC\NutriTEC-API-PG\obj\Debug\net6.0\refint\NutriTEC-API-PG.dll
+C:\Users\pepev\OneDrive\Documentos\GitHub\Nutri-TEC\NutriTEC-API-PG\obj\Debug\net6.0\NutriTEC-API-PG.pdb

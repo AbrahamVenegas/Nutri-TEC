@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace NutriTEC_API_PG.Models;
 
@@ -15,7 +16,7 @@ public partial class Cliente
 
     public int? Edad { get; set; }
 
-    public DateOnly? FechaNacimiento { get; set; }
+    public string? FechaNacimiento { get; set; }
 
     public decimal? Peso { get; set; }
 
@@ -37,9 +38,10 @@ public partial class Cliente
 
     public int? Direccion { get; set; }
 
+    [JsonIgnore]
     public virtual ICollection<Consumo> Consumos { get; set; } = new List<Consumo>();
-
+    [JsonIgnore]
     public virtual Medida? MedidasNavigation { get; set; }
-
+    [JsonIgnore]
     public virtual ICollection<PacientesAsociado> PacientesAsociados { get; set; } = new List<PacientesAsociado>();
 }

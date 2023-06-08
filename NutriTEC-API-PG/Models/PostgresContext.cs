@@ -97,7 +97,9 @@ public partial class PostgresContext : DbContext
             entity.Property(e => e.Email)
                 .HasMaxLength(50)
                 .HasColumnName("email");
-            entity.Property(e => e.FechaNacimiento).HasColumnName("fecha_nacimiento");
+            entity.Property(e => e.FechaNacimiento)
+                .HasMaxLength(10)
+                .HasColumnName("fecha_nacimiento");
             entity.Property(e => e.Imc)
                 .HasPrecision(5, 2)
                 .HasColumnName("imc");
@@ -133,7 +135,9 @@ public partial class PostgresContext : DbContext
             entity.Property(e => e.Almuerzo).HasColumnName("almuerzo");
             entity.Property(e => e.Cena).HasColumnName("cena");
             entity.Property(e => e.Desayuno).HasColumnName("desayuno");
-            entity.Property(e => e.Fecha).HasColumnName("fecha");
+            entity.Property(e => e.Fecha)
+                .HasMaxLength(10)
+                .HasColumnName("fecha");
             entity.Property(e => e.IdCliente).HasColumnName("id_cliente");
             entity.Property(e => e.MeriendaMañana).HasColumnName("merienda_mañana");
             entity.Property(e => e.MeriendaTarde).HasColumnName("merienda_tarde");
@@ -263,7 +267,9 @@ public partial class PostgresContext : DbContext
             entity.Property(e => e.Email)
                 .HasMaxLength(40)
                 .HasColumnName("email");
-            entity.Property(e => e.FechaNacimiento).HasColumnName("fecha_nacimiento");
+            entity.Property(e => e.FechaNacimiento)
+                .HasMaxLength(10)
+                .HasColumnName("fecha_nacimiento");
             entity.Property(e => e.Imc).HasColumnName("imc");
             entity.Property(e => e.Nombre)
                 .HasMaxLength(40)
@@ -295,7 +301,9 @@ public partial class PostgresContext : DbContext
 
             entity.Property(e => e.Cedulanutricionista).HasColumnName("cedulanutricionista");
             entity.Property(e => e.Cedulapaciente).HasColumnName("cedulapaciente");
-            entity.Property(e => e.Fechaplan).HasColumnName("fechaplan");
+            entity.Property(e => e.Fechaplan)
+                .HasMaxLength(10)
+                .HasColumnName("fechaplan");
             entity.Property(e => e.Planasignado).HasColumnName("planasignado");
 
             entity.HasOne(d => d.CedulanutricionistaNavigation).WithMany(p => p.PacientesAsociados)

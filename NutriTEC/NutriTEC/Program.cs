@@ -1,10 +1,24 @@
 using Microsoft.EntityFrameworkCore;
 using NutriTEC.Data;
 using NutriTEC.Models;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+    builder =>
+    {
+        builder.AllowAnyMethod()
+               .AllowAnyHeader()
+               .SetIsOriginAllowed(_ => true)
+               .AllowCredentials();
+    });
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -14,6 +28,8 @@ builder.Services.AddDbContext<NutriTECDb>(options =>
     options.UseNpgsql(connectionStringN));
 
 var app = builder.Build();
+
+app.UseCors();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -84,8 +100,11 @@ app.MapDelete("/cliente/{id:int}", async (int id, NutriTECDb db) =>
 
 app.MapPost("/medida/", async (Medidas m, NutriTECDb db) =>
 {
+    
+    
     db.Medida.Add(m);
     await db.SaveChangesAsync();
+    
 
     return Results.Created($"/medida/{m.Id_cliente}", m);
 

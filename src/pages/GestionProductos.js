@@ -6,28 +6,55 @@ import "react-toastify/dist/ReactToastify.css";
 const GestionProdcutos = () => {
     const [planillas, setPlanillas] = useState([]);
     const [descripcion, setDescripcion] = useState(['']);
-    const [medidas, setMedidas] = useState({
-        cintura: '',
-        cuello: '',
-        caderas: '',
-        porcentajeMusculo: '',
-        porcentajeGrasa: '',
-        fecha: ''
+    const [productos, setProductos] = useState({
+        codigo_barras: '',
+        descripcion: '',
+        tamano_porciones: '',
+        energia: '',
+        grasa: '',
+        sodio: '',
+        carbohidratos: '',
+        proteina: '',
+        vitaminas: '',
+        calcio: '',
+        hierro: '',
+        aprobado: ''
     });
     const [planillaId, setPlanillaId] = useState(null);
     const [showModal, setShowModal] = useState(false);
 
-    // Resto del código omitido por brevedad...
+    //Metodo GET
+    const mostrarPlanilla = async () => {
+        const response = await fetch("http://localhost:49146/api/planilla")
+
+        if (response.ok) {
+            const planillas = await response.json();
+            setPlanillas(planillas)
+        } else {
+            console.log("Hubo un error")
+        }
+    }
+
+    useEffect(() => {
+        mostrarPlanilla()
+    }, [])
+
 
     const handleEditar = (id) => {
         const planillaEncontrado = planillas.find(planilla => planilla.id === id);
-        setMedidas({
-            cintura: planillaEncontrado.cintura,
-            cuello: planillaEncontrado.cuello,
-            caderas: planillaEncontrado.caderas,
-            porcentajeMusculo: planillaEncontrado.porcentajeMusculo,
-            porcentajeGrasa: planillaEncontrado.porcentajeGrasa,
-            fecha: planillaEncontrado.fecha
+        setProductos({
+            codigo_barras: planillaEncontrado.codigo_barras,
+            descripcion: planillaEncontrado.descripcion,
+            tamano_porciones: planillaEncontrado.tamano_porciones,
+            energia: planillaEncontrado.energia,
+            grasa: planillaEncontrado.grasa,
+            sodio: planillaEncontrado.sodio,
+            carbohidratos: planillaEncontrado.carbohidratos,
+            proteina: planillaEncontrado.proteina,
+            vitaminas: planillaEncontrado.vitaminas,
+            calcio: planillaEncontrado.calcio,
+            hierro: planillaEncontrado.hierro,
+            aprobado: planillaEncontrado.aprobado
         });
         setPlanillaId(id);
         setShowModal(true);
@@ -35,20 +62,26 @@ const GestionProdcutos = () => {
 
     const handleModalClose = () => {
         setShowModal(false);
-        setMedidas({
-            cintura: '',
-            cuello: '',
-            caderas: '',
-            porcentajeMusculo: '',
-            porcentajeGrasa: '',
-            fecha: ''
+        setProductos({
+            codigo_barras: '',
+            descripcion: '',
+            tamano_porciones: '',
+            energia: '',
+            grasa: '',
+            sodio: '',
+            carbohidratos: '',
+            proteina: '',
+            vitaminas: '',
+            calcio: '',
+            hierro: '',
+            aprobado: ''
         });
         setPlanillaId(null);
     };
 
     return (
         <div className="container">
-            <h2 className="my-4">Gestión de Planillas</h2>
+            <h2 className="my-4">Gestión de Productos</h2>
             <div className="row mb-3">
                 <div className="col-md-6">
                     <Form>
@@ -56,88 +89,89 @@ const GestionProdcutos = () => {
                             <Form.Label>Codigo de barras:</Form.Label>
                             <Form.Control
                                 type="number"
-                                value={medidas.cintura}
-                                onChange={e => setMedidas({ ...medidas, cintura: e.target.value })}
+                                value={productos.cintura}
+                                onChange={e => setProductos({ ...productos, cintura: e.target.value })}
                             />
                         </Form.Group>
                         <Form.Group controlId="cuello">
                             <Form.Label>Descripción:</Form.Label>
                             <Form.Control
                                 type="number"
-                                value={medidas.cuello}
-                                onChange={e => setMedidas({ ...medidas, cuello: e.target.value })}
+                                value={productos.cuello}
+                                onChange={e => setProductos({ ...productos, cuello: e.target.value })}
                             />
                         </Form.Group>
                         <Form.Group controlId="caderas">
                             <Form.Label>Tamaño de la porción (g/mL):</Form.Label>
                             <Form.Control
                                 type="number"
-                                value={medidas.caderas}
-                                onChange={e => setMedidas({ ...medidas, caderas: e.target.value })}
+                                value={productos.caderas}
+                                onChange={e => setProductos({ ...productos, caderas: e.target.value })}
                             />
                         </Form.Group>
-                        <Form.Group controlId="porcentajeMusculo">
+                        <Form.Group controlId="energia">
                             <Form.Label>Energía (Kcal):</Form.Label>
                             <Form.Control
                                 type="number"
-                                value={medidas.porcentajeMusculo}
-                                onChange={e => setMedidas({ ...medidas, porcentajeMusculo: e.target.value })}
+                                value={productos.energia}
+                                onChange={e => setProductos({ ...productos, energia: e.target.value })}
                             />
                         </Form.Group>
-                        <Form.Group controlId="porcentajeGrasa">
+                        <Form.Group controlId="grasa">
                             <Form.Label>Grasa (g):</Form.Label>
                             <Form.Control
                                 type="number"
-                                value={medidas.porcentajeGrasa}
-                                onChange={e => setMedidas({ ...medidas, porcentajeGrasa: e.target.value })}
+                                value={productos.grasa}
+                                onChange={e => setProductos({ ...productos, grasa: e.target.value })}
                             />
                         </Form.Group>
                         <Form.Group controlId="sodio">
                             <Form.Label>Sodio (mg):</Form.Label>
                             <Form.Control
                                 type="number"
-                                value={medidas.porcentajeGrasa}
-                                onChange={e => setMedidas({ ...medidas, porcentajeGrasa: e.target.value })}
+                                value={productos.sodio}
+                                onChange={e => setProductos({ ...productos, sodio: e.target.value })}
                             />
                         </Form.Group>
                         <Form.Group controlId="carbohidratos">
-                            <Form.Label>carbohidratos (g):</Form.Label>
+                            <Form.Label>Carbohidratos (g):</Form.Label>
                             <Form.Control
                                 type="number"
-                                value={medidas.porcentajeGrasa}
-                                onChange={e => setMedidas({ ...medidas, porcentajeGrasa: e.target.value })}
+                                value={productos.carbohidratos}
+                                onChange={e => setProductos({ ...productos, carbohidratos: e.target.value })}
                             />
                         </Form.Group>
                         <Form.Group controlId="proteina">
                             <Form.Label>Proteína (g):</Form.Label>
                             <Form.Control
                                 type="number"
-                                value={medidas.porcentajeGrasa}
-                                onChange={e => setMedidas({ ...medidas, porcentajeGrasa: e.target.value })}
+                                value={productos.proteina}
+                                onChange={e => setProductos({ ...productos, proteina: e.target.value })}
                             />
                         </Form.Group>
                         <Form.Group controlId="vitaminas">
                             <Form.Label>Vitaminas :</Form.Label>
                             <Form.Control
                                 type="number"
-                                value={medidas.porcentajeGrasa}
-                                onChange={e => setMedidas({ ...medidas, porcentajeGrasa: e.target.value })}
+                                value={productos.vitaminas}
+                                onChange={e => setProductos({ ...productos, vitaminas: e.target.value })}
                             />
                         </Form.Group>
                         <Form.Group controlId="calcio">
                             <Form.Label>Calcio (mg):</Form.Label>
                             <Form.Control
                                 type="number"
-                                value={medidas.porcentajeGrasa}
-                                onChange={e => setMedidas({ ...medidas, porcentajeGrasa: e.target.value })}
+                                value={productos.calcio}
+                                onChange={e => setProductos({ ...productos, calcio: e.target.value })}
                             />
                         </Form.Group>
                         <Form.Group controlId="hierro">
                             <Form.Label>Hierro (mg):</Form.Label>
                             <Form.Control
                                 type="number"
-                                value={medidas.porcentajeGrasa}
-                                onChange={e => setMedidas({ ...medidas, porcentajeGrasa: e.target.value })}
+                                value={productos.hierro}
+                                onChange={e => setProductos({ ...productos, hierro: e.target.value })}
+                                style={{marginBottom: 20}}
                             />
                         </Form.Group>
                         {planillaId === null ? (
@@ -151,24 +185,24 @@ const GestionProdcutos = () => {
             <Table striped bordered hover>
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Cintura</th>
-                        <th>Cuello</th>
-                        <th>Caderas</th>
-                        <th>Porcentaje de músculo</th>
-                        <th>Porcentaje de grasa</th>
-                        <th>ID</th>
-                        <th>Cintura</th>
-                        <th>Cuello</th>
-                        <th>Caderas</th>
-                        <th>Porcentaje de músculo</th>
-                        <th>Porcentaje de grasa</th>
+                        <th>Codigo barras</th>
+                        <th>Descripción</th>
+                        <th>Tamaño porciones</th>
+                        <th>Energía</th>
+                        <th>Grasa</th>
+                        <th>Sodio</th>
+                        <th>Carbohidratos</th>
+                        <th>Proteina</th>
+                        <th>Vitaminas</th>
+                        <th>Calcio</th>
+                        <th>Hierro</th>
+                        <th>Aprobado</th>
                     </tr>
                 </thead>
                 <tbody>
                     {planillas.map((planilla, index) => (
                         <tr key={index}>
-                            <td>{planilla.id}</td>
+                            <td>{planilla.codigo_barras}</td>
                             <td>{planilla.descripcion}</td>
                             <td>
                                 <Button variant="danger" /*onClick={() => eliminarPlanilla(planilla.id) </td>}*/>Eliminar</Button>

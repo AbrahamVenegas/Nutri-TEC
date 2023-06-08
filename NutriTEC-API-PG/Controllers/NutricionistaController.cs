@@ -75,9 +75,9 @@ namespace NutriTEC_API_PG.Controllers
 
         // DELETE: se elimina un dato
         [HttpDelete("Delete")]
-        public async Task<ActionResult<List<Nutricionistum>>> Delete(int cedula)
+        public async Task<ActionResult<List<Nutricionistum>>> Delete(int cedula_nutri)
         {
-            var dbNutricionista = await _context.Nutricionista.FindAsync(cedula);
+            var dbNutricionista = await _context.Nutricionista.FindAsync(cedula_nutri);
             if (dbNutricionista == null)
             {
                 return BadRequest("Nutricionista no encontrado");

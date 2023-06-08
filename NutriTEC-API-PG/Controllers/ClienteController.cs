@@ -77,9 +77,9 @@ namespace NutriTEC_API_PG.Controllers
 
         // DELETE: se elimina un dato
         [HttpDelete("Delete")]
-        public async Task<ActionResult<List<Cliente>>> Delete(int Id)
+        public async Task<ActionResult<List<Cliente>>> Delete(int id_cliente)
         {
-            var dbCliente = await _context.Clientes.FindAsync(Id);
+            var dbCliente = await _context.Clientes.FindAsync(id_cliente);
             if (dbCliente == null)
             {
                 return BadRequest("Cliente no encontrado");
@@ -89,6 +89,5 @@ namespace NutriTEC_API_PG.Controllers
 
             return Ok(await _context.Clientes.ToListAsync());
         }
-
     }
 }

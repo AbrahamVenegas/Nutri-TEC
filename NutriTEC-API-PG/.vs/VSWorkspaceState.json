@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Controllers"
   ],
-  "SelectedNode": "\\NutriTEC-API-PG.sln",
+  "SelectedNode": "\\Controllers\\ConsumoController.cs",
   "PreviewInSolutionExplorer": false
 }

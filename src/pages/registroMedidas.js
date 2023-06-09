@@ -4,14 +4,16 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 
+const BASE_URL = 'https://nutritec-api-postgres.azurewebsites.net/api';
+
 const RegistroMedidas = () => {
     const [medidas, setMedidas] = useState([]);
     const [id_cliente, setIDCliente] = useState('');
     const [cintura, setCintura] = useState('');
     const [cuello, setCuello] = useState('');
     const [caderas, setCaderas] = useState('');
-    const [porcentaje_musculo, setPorcentajeMusculo] = useState('');
-    const [porcentaje_grasa, setPorcentajeGrasa] = useState('');
+    const [porcentajeMusculo, setPorcentajeMusculo] = useState('');
+    const [porcentajeGrasa, setPorcentajeGrasa] = useState('');
     const [fecha, setFecha] = useState('');
 
     
@@ -20,9 +22,9 @@ const RegistroMedidas = () => {
 
     localStorage.setItem('storagePrueba', "prueba");
 
-    // Método GET
+    // Método  
     const mostrarProductos = async () => {
-        const response = await fetch("https://localhost:7165/medida");
+        const response = await fetch(`${BASE_URL}/Medidas/Get_Id_Medidas?id_cliente=1`);
 
         if (response.ok) {
             const medidas = await response.json();
@@ -40,35 +42,35 @@ const RegistroMedidas = () => {
     // Método POST
     const agregarProducto = () => {
         
-        if (!cintura || !cuello || !caderas || !porcentaje_musculo || !porcentaje_grasa) {
+        if (!cintura || !cuello || !caderas || !porcentajeMusculo || !porcentajeGrasa) {
             alert('Debes completar todos los campos');
             return;
         }
 
-        fetch('https://localhost:7165/medida', {
+        fetch(`${BASE_URL}/Medidas/Post`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                id_cliente:1,
+                idCliente:1,
                 cintura:cintura,
                 cuello:cuello,
                 caderas:caderas,
-                porcentaje_musculo:porcentaje_musculo,
-                porcentaje_grasa:porcentaje_grasa,
+                porcentajeMusculo:porcentajeMusculo,
+                porcentajeGrasa:porcentajeGrasa,
                 fecha:fecha
             })
         })
             .then(response => response.json())
             .then(data => {
                 const nuevoProducto = {
-                    id_cliente:data.id_cliente,
+                    idCliente:data.id_cliente,
                     cintura:data.cintura,
                     cuello:data.cuello,
                     caderas:data.caderas,
-                    porcentaje_musculo:data.porcentaje_musculo,
-                    porcentaje_grasa:data.porcentaje_grasa,
+                    porcentajeMusculo:data.porcentajeMusculo,
+                    porcentajeGrasa:data.porcentajeGrasa,
                     fecha:data.fecha
                 };
                 setMedidas([...medidas, nuevoProducto]);
@@ -101,7 +103,7 @@ const RegistroMedidas = () => {
     return (
         <>
         <div className="container">
-            <h2 className="my-4">Gestión de Productos</h2>
+            <h2 className="my-4">Registro de medidas</h2>
             <div className="row mb-3">
                 <div className="col-md-6">
                     <Form.Group controlId="cintura">
@@ -118,16 +120,16 @@ const RegistroMedidas = () => {
                     </Form.Group>
                     <Form.Group controlId="porcentajeMusculo">
                         <Form.Label>Porcentaje de musculo:</Form.Label>
-                        <Form.Control type="number" /* maxLength={50} */ value={porcentaje_musculo} onChange={e => setPorcentajeMusculo(e.target.value)} />
-                        {/* <small>{porcentaje_musculo.length}/50 caracteres</small> */}
+                        <Form.Control type="number" /* maxLength={50} */ value={porcentajeMusculo} onChange={e => setPorcentajeMusculo(e.target.value)} />
+                        {/* <small>{porcentajeMusculo.length}/50 caracteres</small> */}
                     </Form.Group>
                     <Form.Group controlId="porcentajeGrasa">
                         <Form.Label>Porcentaje de grasa:</Form.Label>
-                        <Form.Control type="number" value={porcentaje_grasa} onChange={e => setPorcentajeGrasa(e.target.value)} />
+                        <Form.Control type="number" value={porcentajeGrasa} onChange={e => setPorcentajeGrasa(e.target.value)} />
                     </Form.Group>
                     <Form.Group controlId="fecha">
-                        <Form.Label>Fecha:</Form.Label>
-                        <Form.Control type="date" value={fecha} onChange={e => setFecha(e.target.value)} />
+                        <Form.Label>Fecha (DD/MM/AAAA):</Form.Label>
+                        <Form.Control type="text" value={fecha} onChange={e => setFecha(e.target.value)} />
                     </Form.Group>
                 </div>
                 <div className="col-md-3 d-flex align-items-end">
@@ -153,12 +155,12 @@ const RegistroMedidas = () => {
                 <tbody>
                     {medidas.map((medida, index) => (
                         <tr key={index}>
-                            <td>{medida.id_cliente}</td>
+                            <td>{medida.idMedida}</td>
                             <td>{medida.cintura}</td>
                             <td>{medida.cuello}</td>
                             <td>{medida.caderas}</td>
-                            <td>{medida.porcentaje_musculo}</td>
-                            <td>{medida.porcentaje_grasa}</td>
+                            <td>{medida.porcentajeMusculo}</td>
+                            <td>{medida.porcentajeGrasa}</td>
                             <td>{medida.fecha}</td>
                         </tr>
                     ))}

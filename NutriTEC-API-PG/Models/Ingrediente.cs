@@ -11,8 +11,8 @@ public partial class Ingrediente
     public int Idproducto { get; set; }
 
     [JsonIgnore]
-    public virtual Producto IdproductoNavigation { get; set; }
+    public virtual Producto? IdproductoNavigation { get; set; }
 
     [JsonIgnore]
-    public virtual Recetum IdrecetaNavigation { get; set; }
+    public virtual Recetum? IdrecetaNavigation { get; set; }
 }

@@ -39,8 +39,8 @@ public partial class Nutricionistum
     public string Password { get; set; } = null!;
 
     [JsonIgnore]
-    public virtual Direccion DireccionNavigation { get; set; }
+    public virtual Direccion? DireccionNavigation { get; set; }
 
     [JsonIgnore]
-    public virtual TipoPago TipocobroNavigation { get; set; }
+    public virtual TipoPago? TipocobroNavigation { get; set; }
 }

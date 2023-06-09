@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NutriTEC_API_PG.Models;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace NutriTEC_API_PG.Controllers
 {
@@ -15,11 +18,18 @@ namespace NutriTEC_API_PG.Controllers
             _context = context;
         }
 
-        // GET: Se muestran los datos obtenidos 
-        [HttpGet("Get")]
-        public async Task<ActionResult<List<AsociacionCliente>>> Get()
+        [HttpGet("ObtenerPacientesSinNutricionistas")]
+        public async Task<ActionResult<IEnumerable<PacienteSinNutricionista>>> ObtenerPacientesSinNutricionistas()
         {
-            return Ok(await _context.AsociacionClientes.ToListAsync());
+            var datosVista = await _context.Set<PacienteSinNutricionista>().FromSqlRaw("SELECT * FROM public.pacientes_sin_nutricionista").ToListAsync();
+            return Ok(datosVista);
+        }
+
+        [HttpGet("ObtenerPacientesPorNutricionistas")]
+        public async Task<ActionResult<IEnumerable<PacientePorNutri>>> ObtenerPacientesPorNutricionistas()
+        {
+            var datosVista = await _context.Set<PacientePorNutri>().FromSqlRaw("SELECT * FROM public.pacientes_por_nutricionistas").ToListAsync();
+            return Ok(datosVista);
         }
 
         // GET by id: Se muestran los datos obtenidos por ID 

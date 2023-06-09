@@ -24,14 +24,14 @@ namespace NutriTEC_API_PG.Controllers
 
         // GET by id: Se muestran los datos obtenidos por ID 
         [HttpGet("Get_Id_Nutri")]
-        public async Task<ActionResult<List<Nutricionistum>>> Get(int cedula_nutri)
+        public async Task<ActionResult<List<Nutricionistum>>> Get(String email)
         {
-            var dbNutricionista = await _context.Nutricionista.FindAsync(cedula_nutri);
-            if (dbNutricionista == null)
+            var dbCliente = await _context.Nutricionista.Where(a => a.Email == email).ToListAsync();
+            if (dbCliente == null)
             {
                 return BadRequest("Nutricionista no encontrado");
             }
-            return Ok(dbNutricionista);
+            return Ok(dbCliente);
         }
 
         // POST: Se guardan los datos
@@ -59,12 +59,13 @@ namespace NutriTEC_API_PG.Controllers
             dbNutricionista.Edad = request.Edad;
             dbNutricionista.FechaNacimiento = request.FechaNacimiento;
             dbNutricionista.Peso = request.Peso;
+            dbNutricionista.Altura = request.Altura;
             dbNutricionista.Imc = request.Imc;
             dbNutricionista.Direccion = request.Direccion;
-            //dbNutricionista.Foto = request.Foto;
+            dbNutricionista.Foto = request.Foto;
             dbNutricionista.Tarjeta = request.Tarjeta;
             dbNutricionista.Tipocobro = request.Tipocobro;
-            dbNutricionista.Tipocobro = request.Tipocobro;
+            dbNutricionista.Email = request.Email;
             dbNutricionista.Password = request.Password;
 
             await _context.SaveChangesAsync();

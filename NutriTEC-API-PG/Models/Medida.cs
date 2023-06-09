@@ -23,5 +23,5 @@ public partial class Medida
     public decimal? PorcentajeGrasa { get; set; }
 
     [JsonIgnore]
-    public virtual Cliente IdClienteNavigation { get; set; }
+    public virtual Cliente? IdClienteNavigation { get; set; }
 }

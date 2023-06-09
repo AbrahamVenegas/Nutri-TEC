@@ -30,7 +30,7 @@ public partial class Consumo
     public virtual Producto? DesayunoNavigation { get; set; }
 
     [JsonIgnore]
-    public virtual Cliente IdClienteNavigation { get; set; }
+    public virtual Cliente? IdClienteNavigation { get; set; }
 
     [JsonIgnore]
     public virtual Producto? MeriendaMañanaNavigation { get; set; }

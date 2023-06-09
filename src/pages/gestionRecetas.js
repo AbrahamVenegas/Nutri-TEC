@@ -15,7 +15,11 @@ const RecetaForm = () => {
     const descripcionCodificada = encodeURIComponent(nombreReceta);
 
     fetch(`https://nutritec-api-postgres.azurewebsites.net/api/Receta/SPHacerReceta?id_producto1=${producto1}&porcion1=${porcion1}&id_producto2=${producto2}&porcion2=${porcion2}&id_producto3=${producto3}&porcion3=${porcion3}&descripcion="${nombreReceta}"&codigo=${codigoBarras}`, {
-      method: 'GET'
+      method: 'GET',
+      Origin: "http://localhost:3000",
+      headers: {
+        'Content-Type': 'application/json',
+      },
     })
       
       .then(response => response.json())

@@ -15,6 +15,7 @@ import SeguimientoPaciente from "./pages/SeguimientoPaciente";
 import GenerarReporte from "./pages/generarReporte";
 import GestionAprobacion from "./pages/GestionAprobacion";
 import GestionRecetas from "./pages/gestionRecetas";
+import ReporteCobro from "./pages/ReporteCobro";
 
 
 function App() {
@@ -37,9 +38,11 @@ function App() {
           <Route path="/Medidas" element={<RegistroMedidas />} />
           <Route path="/consumo" element={<RegistroConsumo />} />
           <Route path="/productos" element={<GestionProdcutos />} />
+          <Route path="/gestionrecetas" element={<GestionRecetas />} />
 
           <Route path="/aprobacionproductos" element={<GestionAprobacion />} />
-          <Route path="/gestionrecetas" element={<GestionRecetas />} />
+          <Route path="/reportecobro" element={<ReporteCobro />} />
+          
         </Routes>
       </Router>
     </>

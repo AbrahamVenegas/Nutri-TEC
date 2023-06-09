@@ -197,6 +197,7 @@ const GestionProdcutos = () => {
                         <th>Calcio</th>
                         <th>Hierro</th>
                         <th>Aprobado</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -204,6 +205,16 @@ const GestionProdcutos = () => {
                         <tr key={index}>
                             <td>{planilla.codigo_barras}</td>
                             <td>{planilla.descripcion}</td>
+                            <td>{planilla.tamano_porciones}</td>
+                            <td>{planilla.energia}</td>
+                            <td>{planilla.grasa}</td>
+                            <td>{planilla.sodio}</td>
+                            <td>{planilla.carbohidratos}</td>
+                            <td>{planilla.proteina}</td>
+                            <td>{planilla.vitaminas}</td>
+                            <td>{planilla.calcio}</td>
+                            <td>{planilla.hierro}</td>
+                            <td>{planilla.aprobado}</td>
                             <td>
                                 <Button variant="danger" /*onClick={() => eliminarPlanilla(planilla.id) </td>}*/>Eliminar</Button>
                                 <Button variant="primary" onClick={() => handleEditar(planilla.id)}>Editar</Button>

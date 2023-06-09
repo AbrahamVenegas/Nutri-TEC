@@ -4,9 +4,9 @@ import { Form, FormGroup, Modal, ModalBody, ModalHeader, ModalFooter, Button } f
 // Estado inicial de la informacion 
 const modeloProductos = {
     serie: 0,
-    codigo_barras: "",
+    codigoBarras: "",
     descripcion: "",
-    porcion: "",
+    tamanoPorciones: "",
     energia: "",
     grasa: "",
     sodio: "",
@@ -15,6 +15,7 @@ const modeloProductos = {
     vitaminas: "",
     calcio: "",
     hierro: "",
+    aprobado: "",
 }
 
 
@@ -69,8 +70,8 @@ const ModalProductos = ({ mostrarModal, setMostrarModal, guardarProductos,
                         <Form.Control
                             type="text"
                             placeholder="Código de barras"
-                            name="codigo_barras"
-                            onChange={(e) => actualizarDato(e)} value={productos.codigo_barras}
+                            name="codigoBarras"
+                            onChange={(e) => actualizarDato(e)} value={productos.codigoBarras}
                         />
                         <Form.Label>Descripcion del producto</Form.Label>
                         <Form.Control
@@ -83,8 +84,8 @@ const ModalProductos = ({ mostrarModal, setMostrarModal, guardarProductos,
                         <Form.Control
                             type="text"
                             placeholder="Porción en (g/ml)"
-                            name="porcion"
-                            onChange={(e) => actualizarDato(e)} value={productos.porcion}
+                            name="tamanoPorciones"
+                            onChange={(e) => actualizarDato(e)} value={productos.tamanoPorciones}
                         />
                         <Form.Label>Energía</Form.Label>
                         <Form.Control
@@ -141,6 +142,13 @@ const ModalProductos = ({ mostrarModal, setMostrarModal, guardarProductos,
                             placeholder="Hierro en (mg)"
                             name="hierro"
                             onChange={(e) => actualizarDato(e)} value={productos.hierro}
+                        />
+                        <Form.Label>Estado</Form.Label>
+                        <Form.Control
+                            type="text"
+                            disabled
+                            name="aprobado"
+                            onChange={(e) => actualizarDato(e)} value={productos.aprobado=false}
                         />
                     </FormGroup>
                 </Form>

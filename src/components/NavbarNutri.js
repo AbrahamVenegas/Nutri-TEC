@@ -4,6 +4,9 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 
 function NavbarNutri() {
+
+  const nombreNutri = localStorage.getItem('nombreNutricionista');
+
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Container>
@@ -22,7 +25,7 @@ function NavbarNutri() {
             </NavDropdown>
           </Nav>
           <Navbar.Text>
-            Signed in as: <a href="/">Mark Otto</a>
+            Signed in as: <a href="/">{nombreNutri}</a>
           </Navbar.Text>
         </Navbar.Collapse>
       </Container>

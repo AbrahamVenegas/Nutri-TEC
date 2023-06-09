@@ -1,94 +1,189 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Container, Form } from 'react-bootstrap';
-import { Document, Page, Text, View, Image, PDFDownloadLink } from '@react-pdf/renderer';
+import { Container, Table, Form, Button } from 'react-bootstrap';
+import { PDFDownloadLink, Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 
-import LogoImage from './Logo1.png'; // Ajusta la ruta de la imagen según corresponda
-
-function GenerarReporte() {
+const GenerarReporte = () => {
+  const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [data, setData] = useState([]);
 
-  const prueba = localStorage.getItem('storagePrueba');
-
-
-  /* const [id_cliente, setIDCliente] = useState('');
-  const [cintura, setCintura] = useState('');
-  const [cuello, setCuello] = useState('');
-  const [caderas, setCaderas] = useState('');
-  const [porcentaje_musculo, setPorcentajeMusculo] = useState('');
-  const [porcentaje_grasa, setPorcentajeGrasa] = useState('');
-  const [fecha, setFecha] = useState(''); */
-
-  const filtrarDatos = () => {
-    const filteredData = data.filter((item) => {
-      const fecha = new Date(item.fecha);
-      return fecha >= new Date(startDate) && fecha <= new Date(endDate);
-    });
-    return filteredData;
+  const fetchData = async () => {
+    try {
+      const response = await fetch('https://nutritec-api-postgres.azurewebsites.net/api/Medidas/Get');
+      const jsonData = await response.json();
+      setData(jsonData);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   };
 
-  const GenerarDocumentoPDF = () => (
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleDateRangeSubmit = (e) => {
+    e.preventDefault();
+
+    const filteredData = data.filter((item) => {
+      const itemDateParts = item.fecha.split('/');
+      const itemDate = new Date(
+        itemDateParts[2],
+        itemDateParts[1] - 1,
+        itemDateParts[0]
+      );
+
+      const startDateParts = startDate.split('-');
+      const startDateObj = new Date(
+        startDateParts[0],
+        startDateParts[1] - 1,
+        startDateParts[2]
+      );
+
+      const endDateParts = endDate.split('-');
+      const endDateObj = new Date(
+        endDateParts[0],
+        endDateParts[1] - 1,
+        endDateParts[2]
+      );
+
+      return itemDate >= startDateObj && itemDate <= endDateObj;
+    });
+
+    setFilteredData(filteredData);
+  };
+
+  const renderPDFLink = () => {
+    if (filteredData.length === 0) {
+      return null;
+    }
+
+    return (
+      <PDFDownloadLink
+        document={<PDFDocument data={filteredData} />}
+        fileName="datos_filtrados.pdf"
+      >
+        {({ blob, url, loading, error }) =>
+          loading ? 'Generando PDF...' : 'Descargar PDF'
+        }
+      </PDFDownloadLink>
+    );
+  };
+
+
+  const PDFDocument = ({ data }) => (
     <Document>
       <Page>
-      <Image src={LogoImage} style={{marginTop: 20, marginBottom: 40 }} />
-        <View>
-          
-          <Text style={{ fontSize: 14, marginBottom: 10 }}></Text>
-          <Text style={{ fontSize: 14, marginBottom: 10 }}>Reporte de medidas</Text>
-          {filtrarDatos().map((item) => {
-            const fecha = new Date(item.fecha);
-            const fechaTexto = `${fecha.getDate() + 1}/${fecha.getMonth() + 1}/${fecha.getFullYear()}`;
-            return (
-              <Text key={item.fecha} style={{ marginBottom: 10 }}>
-                Fecha: {fechaTexto} - Medida: {item.medida}
-              </Text>
-            );
-          })}
+        <View style={styles.container}>
+          <Text style={styles.header}>Datos Filtrados</Text>
+          {data.map((item, index) => (
+            <View key={index} style={styles.dataContainer}>
+              <Text style={styles.idLabel}>ID medida: {item.idMedida}</Text>
+              <View style={styles.divider}></View>
+              <Text style={styles.label}>Cintura: {item.cintura}</Text>
+              <Text style={styles.label}>Cuello: {item.cuello}</Text>
+              <Text style={styles.label}>Caderas: {item.caderas}</Text>
+              <Text style={styles.label}>Porcentaje Musculo: {item.porcentajeMusculo}</Text>
+              <Text style={styles.label}>Porcentaje Grasa: {item.porcentajeGrasa}</Text>
+              <Text style={styles.label}>Fecha: {item.fecha}</Text>
+            </View>
+          ))}
         </View>
-        
       </Page>
     </Document>
   );
 
-  const ejemploData = [
-    { fecha: new Date('2023-01-01'), medida: 50 },
-    { fecha: new Date('2023-02-02'), medida: 60 },
-    { fecha: new Date('2023-03-03'), medida: 70 },
-    { fecha: new Date('2023-04-04'), medida: 80 },
-    { fecha: new Date('2023-06-05'), medida: 90 },
-    { fecha: new Date('2023-06-07'), medida: 100 },
-    { fecha: new Date('2023-06-07'), medida: 110 },
-    { fecha: new Date('2023-06-08'), medida: 120 },
-    { fecha: new Date('2023-01-09'), medida: 130 },
-    { fecha: new Date('2023-01-10'), medida: 140 },
-  ];
 
-  useEffect(() => {
-    setData(ejemploData);
-  }, []);
+
+
+  const styles = StyleSheet.create({
+    container: {
+      padding: 20,
+    },
+    header: {
+      fontSize: 24,
+      marginBottom: 20,
+    },
+    dataContainer: {
+      marginBottom: 10,
+    },
+    idLabel: {
+      marginBottom: 5,
+      fontWeight: 'bold',
+    },
+    divider: {
+      borderBottomWidth: 1,
+      borderBottomColor: 'gray',
+      marginBottom: 5,
+    },
+    label: {
+      marginBottom: 5,
+    },
+  });
+
+
 
   return (
-    console.log(prueba),
     <Container>
-      <h1>Generador de reportes</h1>
-      <Form>
+      <h1>Tabla de Datos</h1>
+
+      <Form onSubmit={handleDateRangeSubmit}>
         <Form.Group controlId="startDate">
-          <Form.Label>Fecha inicial:</Form.Label>
-          <Form.Control type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+          <Form.Label>Fecha inicial</Form.Label>
+          <Form.Control
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+          />
         </Form.Group>
+
         <Form.Group controlId="endDate">
-          <Form.Label>Fecha final:</Form.Label>
-          <Form.Control type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} style={{ marginBottom: '20px' }} />
+          <Form.Label>Fecha final</Form.Label>
+          <Form.Control
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+          />
         </Form.Group>
+
+        <Button variant="primary" type="submit">
+          Filtrar
+        </Button>
       </Form>
-      <PDFDownloadLink document={<GenerarDocumentoPDF />} fileName="ReporteMedidas.pdf">
-        {({ blob, url, loading, error }) =>
-          <Button>Generar reporte en PDF</Button>
-        }
-      </PDFDownloadLink>
+
+      <Table>
+        <thead>
+          <tr>
+            <th>Id Medida</th>
+            <th>Cintura</th>
+            <th>Cuello</th>
+            <th>Caderas</th>
+            <th>Porcentaje musculo</th>
+            <th>Porcentaje grasa</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredData.map((item, index) => (
+            <tr key={index}>
+              <td>{item.idMedida}</td>
+              <td>{item.cintura}</td>
+              <td>{item.cuello}</td>
+              <td>{item.caderas}</td>
+              <td>{item.porcentajeMusculo}</td>
+              <td>{item.porcentajeGrasa}</td>
+              <td>{item.fecha}</td>
+
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+
+
+      {renderPDFLink()}
+
     </Container>
   );
-}
+};
 
 export default GenerarReporte;

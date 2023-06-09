@@ -19,7 +19,7 @@ const AsignacionPlan = () => {
     const mostrarPlanes = async () => {
         async function fetchData() {
             try {
-                const response = await fetch('https://localhost:7165/nutricionistas'); //Falta el link
+                const response = await fetch('https://localhost:7277/api/Nutricionista/Get'); //Falta el link
                 const data = await response.json();
                 setPlanes(data);
             } catch (error) {

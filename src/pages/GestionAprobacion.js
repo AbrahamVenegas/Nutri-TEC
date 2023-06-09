@@ -1,55 +1,77 @@
 import React, { useState } from 'react';
-import { Table, Button } from 'react-bootstrap';
+import { Container, Form, Button } from 'react-bootstrap';
 
-const GestionAprobacion = () => {
-  const [productos, setProductos] = useState([
-    { id: 1, producto: 'Producto 1', estado: 'Sin aprobar' },
-    { id: 2, producto: 'Producto 2', estado: 'Aprobado' },
-    { id: 3, producto: 'Producto 3', estado: 'Sin aprobar' },
-  ]);
+function GestionRecetas() {
+  const [nombreReceta, setNombreReceta] = useState('');
+  const [producto1, setProducto1] = useState('');
+  const [porcion1, setPorcion1] = useState('');
+  const [producto2, setProducto2] = useState('');
+  const [porcion2, setPorcion2] = useState('');
+  const [producto3, setProducto3] = useState('');
+  const [porcion3, setPorcion3] = useState('');
+  const [codigoBarras, setCodigoBarras] = useState('');
 
-  const handleAprobar = (id) => {
-    setProductos((prevProductos) => {
-      return prevProductos.map((producto) => {
-        if (producto.id === id && producto.estado !== 'Aprobado') {
-          return { ...producto, estado: 'Aprobado' };
+  const handleSubmit = () => {
+    const url = `https://nutritec-api-postgres.azurewebsites.net/api/Receta/SPHacerReceta?id_producto1=${producto1}&porcion1=${porcion1}&id_producto2=${producto2}&porcion2=${porcion2}&id_producto3=${producto3}&porcion3=${porcion3}&descripcion=${encodeURIComponent(nombreReceta)}&codigo=${codigoBarras}`;
+
+    fetch(url, {
+      method: 'GET'
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Error al realizar la solicitud.');
         }
-        return producto;
+        // Aquí puedes manejar la respuesta exitosa de la API.
+        console.log('Solicitud exitosa');
+      })
+      .catch(error => {
+        // Aquí puedes manejar el error.
+        console.error('Error en la solicitud fetch:', error);
       });
-    });
   };
 
   return (
-    <div className="container">
-      <h2 className="my-4">Gestión de Productos</h2>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Producto</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {productos.map((producto) => (
-            <tr key={producto.id}>
-              <td>{producto.producto}</td>
-              <td>{producto.estado}</td>
-              <td>
-                <Button
-                  variant="primary"
-                  disabled={producto.estado === 'Aprobado'}
-                  onClick={() => handleAprobar(producto.id)}
-                >
-                  Aprobar
-                </Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-    </div>
+    <Container>
+      <h1>Crear Receta</h1>
+      <Form>
+        <Form.Group controlId="nombreReceta">
+          <Form.Label>Nombre de la Receta</Form.Label>
+          <Form.Control type="text" value={nombreReceta} onChange={e => setNombreReceta(e.target.value)} />
+        </Form.Group>
+        <Form.Group controlId="producto1">
+          <Form.Label>Producto 1</Form.Label>
+          <Form.Control type="text" value={producto1} onChange={e => setProducto1(e.target.value)} />
+        </Form.Group>
+        <Form.Group controlId="porcion1">
+          <Form.Label>Porción 1</Form.Label>
+          <Form.Control type="text" value={porcion1} onChange={e => setPorcion1(e.target.value)} />
+        </Form.Group>
+        <Form.Group controlId="producto2">
+          <Form.Label>Producto 2</Form.Label>
+          <Form.Control type="text" value={producto2} onChange={e => setProducto2(e.target.value)} />
+        </Form.Group>
+        <Form.Group controlId="porcion2">
+          <Form.Label>Porción 2</Form.Label>
+          <Form.Control type="text" value={porcion2} onChange={e => setPorcion2(e.target.value)} />
+        </Form.Group>
+        <Form.Group controlId="producto3">
+          <Form.Label>Producto 3</Form.Label>
+          <Form.Control type="text" value={producto3} onChange={e => setProducto3(e.target.value)} />
+        </Form.Group>
+        <Form.Group controlId="porcion3">
+          <Form.Label>Porción 3</Form.Label>
+          <Form.Control type="text" value={porcion3} onChange={e => setPorcion3(e.target.value)} />
+        </Form.Group>
+        <Form.Group controlId="codigoBarras">
+          <Form.Label>Código de Barras</Form.Label>
+          <Form.Control type="text" value={codigoBarras} onChange={e => setCodigoBarras(e.target.value)} />
+        </Form.Group>
+        <Button variant="primary" onClick={handleSubmit}>
+          Enviar
+        </Button>
+      </Form>
+    </Container>
   );
-};
+}
 
-export default GestionAprobacion;
+export default GestionRecetas;

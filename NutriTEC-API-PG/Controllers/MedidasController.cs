@@ -26,7 +26,7 @@ namespace NutriTEC_API_PG.Controllers
         [HttpGet("Get_Id_Medidas")]
         public async Task<ActionResult<List<Medida>>> Get(int id_cliente)
         {
-            var dbCliente = await _context.Medidas.FindAsync(id_cliente);
+            var dbCliente = await _context.Medidas.Where(a => a.IdCliente == id_cliente).ToListAsync();
             if (dbCliente == null)
             {
                 return BadRequest("Medidas no encontradas");

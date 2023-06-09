@@ -21,6 +21,18 @@ public partial class PostgresContext : DbContext
 
     public virtual DbSet<AsociacionCliente> AsociacionClientes { get; set; }
 
+    //Experimental
+    public DbSet<PacientePorNutri> PacientePorNutri { get; set; }
+
+    //Experimental
+    public DbSet<PacienteSinNutricionista> PacienteSinNutricionista { get; set; }
+
+    //Experimental
+    public DbSet<PlanPorPaciente> PlanPorPaciente { get; set; }
+
+    //Experimental
+    public DbSet<ReporteCobro> ReporteCobro { get; set; }
+
     public virtual DbSet<Cliente> Clientes { get; set; }
 
     public virtual DbSet<Consumo> Consumos { get; set; }
@@ -51,6 +63,15 @@ public partial class PostgresContext : DbContext
             .HasPostgresExtension("pg_catalog", "azure")
             .HasPostgresExtension("pg_catalog", "pgaadauth")
             .HasPostgresExtension("pg_cron");
+
+        //Experimental 
+        modelBuilder.Entity<PacientePorNutri>().HasNoKey();
+
+        //Experimental 
+        modelBuilder.Entity<PlanPorPaciente>().HasNoKey();
+
+        //Experimental 
+        modelBuilder.Entity<ReporteCobro>().HasNoKey();
 
         modelBuilder.Entity<Administrador>(entity =>
         {

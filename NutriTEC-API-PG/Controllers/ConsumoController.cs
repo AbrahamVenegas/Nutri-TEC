@@ -43,5 +43,20 @@ namespace NutriTEC_API_PG.Controllers
             return Ok(await _context.Consumos.ToListAsync());
         }
 
+        // DELETE: se elimina un dato
+        [HttpDelete("Delete")]
+        public async Task<ActionResult<List<Consumo>>> Delete(int id_cliente, String fecha)
+        {
+            var dbConsumo = await _context.Consumos.FindAsync(id_cliente, fecha);
+            if (dbConsumo == null)
+            {
+                return BadRequest("Consumo no encontrado");
+            }
+            _context.Consumos.Remove(dbConsumo);
+            await _context.SaveChangesAsync();
+
+            return Ok(await _context.Consumos.ToListAsync());
+        }
+
     }
 }

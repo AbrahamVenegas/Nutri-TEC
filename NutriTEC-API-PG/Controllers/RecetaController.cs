@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NutriTEC_API_PG.Models;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace NutriTEC_API_PG.Controllers
 {
@@ -15,64 +16,25 @@ namespace NutriTEC_API_PG.Controllers
             _context = context;
         }
 
-        // GET: Se muestran los datos obtenidos 
-        [HttpGet("Get")]
-        public async Task<ActionResult<List<Recetum>>> Get()
+        [HttpGet("SPHacerReceta")]
+        public async Task<ActionResult<int>> GetAprobado(int id_producto1, int porcion1, int id_producto2,
+            int porcion2, int id_producto3, int porcion3, String descripcion, int codigo)
         {
-            return Ok(await _context.Receta.ToListAsync());
+            var result = await _context.Database.ExecuteSqlRawAsync(
+                "CALL hacer_recetas(@id_producto1, @porcion1," +
+                "@id_producto2, @porcion2, @id_producto3, @porcion3, @descripcion, @codigo)",
+                new NpgsqlParameter("id_producto1", id_producto1),
+                new NpgsqlParameter("porcion1", porcion1),
+                new NpgsqlParameter("id_producto2", id_producto2),
+                new NpgsqlParameter("porcion2", porcion2),
+                new NpgsqlParameter("id_producto3", id_producto3),
+                new NpgsqlParameter("porcion3", porcion3),
+                new NpgsqlParameter("descripcion", descripcion),
+                new NpgsqlParameter("codigo", codigo)
+            );
+
+            return Ok(result);
         }
 
-        // GET by id: Se muestran los datos obtenidos por ID 
-        [HttpGet("Get_Id_Receta")]
-        public async Task<ActionResult<List<Recetum>>> Get(int id_receta)
-        {
-            var dbReceta = await _context.Receta.FindAsync(id_receta);
-            if (dbReceta == null)
-            {
-                return BadRequest("Receta no encontrada");
-            }
-            return Ok(dbReceta);
-        }
-
-        // POST: Se guardan los datos
-        [HttpPost("Post")]
-        public async Task<ActionResult<List<Recetum>>> Post(Recetum receta)
-        {
-            _context.Receta.Add(receta);
-            await _context.SaveChangesAsync();
-            return Ok(await _context.Receta.ToListAsync());
-        }
-
-        // PUT: Se actualiza los datos
-        [HttpPut("Edit")]
-        public async Task<ActionResult<List<Recetum>>> Put(Recetum request)
-        {
-            var dbReceta = await _context.Receta.FindAsync(request.Id);
-            if (dbReceta == null)
-            {
-                return BadRequest("Receta no encontrada");
-            }
-
-            dbReceta.Nombrereceta = request.Nombrereceta;
-
-            await _context.SaveChangesAsync();
-
-            return Ok(await _context.Receta.ToListAsync());
-        }
-
-        // DELETE: se elimina un dato
-        [HttpDelete("Delete")]
-        public async Task<ActionResult<List<Recetum>>> Delete(int id_receta)
-        {
-            var dbReceta = await _context.Receta.FindAsync(id_receta);
-            if (dbReceta == null)
-            {
-                return BadRequest("Receta no encontrada");
-            }
-            _context.Receta.Remove(dbReceta);
-            await _context.SaveChangesAsync();
-
-            return Ok(await _context.Receta.ToListAsync());
-        }
     }
 }

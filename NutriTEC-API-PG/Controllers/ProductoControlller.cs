@@ -22,14 +22,26 @@ namespace NutriTEC_API_PG.Controllers
             return Ok(await _context.Productos.ToListAsync());
         }
 
-        // GET by id: Se muestran los datos obtenidos por ID 
-        [HttpGet("Get_Id_Producto")]
-        public async Task<ActionResult<List<Producto>>> Get(int codigobarras)
+        // GET by id: Se muestran los datos obtenidos por Codigo de barras
+        [HttpGet("Get_CodigoBarras")]
+        public async Task<ActionResult<List<Producto>>> Get(int codigo)
         {
-            var dbProducto = await _context.Productos.FindAsync(codigobarras);
+            var dbProducto = await _context.Productos.Where(a => a.CodigoBarras == codigo).ToListAsync();
             if (dbProducto == null)
             {
-                return BadRequest("Productos no encontrados");
+                return BadRequest("Nutricionista no encontrado");
+            }
+            return Ok(dbProducto);
+        }
+
+        // GET by id: Se muestran los datos obtenidos por Descripcion
+        [HttpGet("Get_Descripcion")]
+        public async Task<ActionResult<List<Producto>>> Get(String descripcion)
+        {
+            var dbProducto = await _context.Productos.Where(a => a.Descripcion == descripcion).ToListAsync();
+            if (dbProducto == null)
+            {
+                return BadRequest("Nutricionista no encontrado");
             }
             return Ok(dbProducto);
         }

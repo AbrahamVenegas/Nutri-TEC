@@ -15,8 +15,8 @@ public partial class AsignacionPlan
     public string? Fechafin { get; set; }
 
     [JsonIgnore]
-    public virtual Cliente CedulapacienteNavigation { get; set; }
+    public virtual Cliente? CedulapacienteNavigation { get; set; }
 
     [JsonIgnore]
-    public virtual GestionPlane PlanasignadoNavigation { get; set; }
+    public virtual GestionPlane? PlanasignadoNavigation { get; set; }
 }

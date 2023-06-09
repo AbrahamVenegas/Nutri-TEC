@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace NutriTEC_API_PG.Models;
 
 public partial class Medida
 {
-    public int Id { get; set; }
+    public int IdMedida { get; set; }
 
-    public DateOnly? Fecha { get; set; }
+    public int IdCliente { get; set; }
 
-    public int? IdCliente { get; set; }
+    public string Fecha { get; set; } = null!;
 
     public decimal? Cintura { get; set; }
 
@@ -21,5 +22,6 @@ public partial class Medida
 
     public decimal? PorcentajeGrasa { get; set; }
 
-    public virtual ICollection<Cliente> Clientes { get; set; } = new List<Cliente>();
+    [JsonIgnore]
+    public virtual Cliente IdClienteNavigation { get; set; }
 }

@@ -15,6 +15,7 @@ const TablaProductos = ({ data, setEditar, mostrarModal, setMostrarModal, elimin
             <thead>
                 <tr>
                     <th>Código de Barras</th>
+                    <th>Descripcion</th>
                     <th>Porción</th>
                     <th>Energía</th>
                     <th>Grasa</th>
@@ -24,18 +25,21 @@ const TablaProductos = ({ data, setEditar, mostrarModal, setMostrarModal, elimin
                     <th>Vitaminas</th>
                     <th>Calcio</th>
                     <th>Hierro</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 {
                     (data.length < 1) ? (
                         <tr>
-                            <td colSpan="10">Sin registros</td>
+                            <td colSpan="12">Sin registros</td>
                         </tr>
                     ) : (
                         data.map((item) => (
-                            <tr key={item.codigo_barras}>
-                                <td>{item.porcion}</td>
+                            <tr key={item.codigoBarras}>
+                                <td>{item.codigoBarras}</td>
+                                <td>{item.descripcion}</td>
+                                <td>{item.tamanoPorciones}</td>
                                 <td>{item.energia}</td>
                                 <td>{item.grasa}</td>
                                 <td>{item.sodio}</td>
@@ -54,7 +58,7 @@ const TablaProductos = ({ data, setEditar, mostrarModal, setMostrarModal, elimin
                                     <Button
                                         variant="danger"
                                         size="sm"
-                                        onClick={() => eliminarProductos(item.serie)}
+                                        onClick={() => eliminarProductos(item.codigoBarras)}
                                     >Eliminar</Button>
                                 </td>
                             </tr>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace NutriTEC_API_PG.Models;
 
@@ -13,5 +14,6 @@ public partial class Direccion
 
     public string? Distrito { get; set; }
 
+    [JsonIgnore]
     public virtual ICollection<Nutricionistum> Nutricionista { get; set; } = new List<Nutricionistum>();
 }

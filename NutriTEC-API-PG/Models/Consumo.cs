@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace NutriTEC_API_PG.Models;
 
 public partial class Consumo
 {
-    public int Id { get; set; }
+    public int IdCliente { get; set; }
+
+    public string Fecha { get; set; } = null!;
 
     public int? Desayuno { get; set; }
 
@@ -17,19 +20,21 @@ public partial class Consumo
 
     public int? Cena { get; set; }
 
-    public DateOnly Fecha { get; set; }
-
-    public int IdCliente { get; set; }
-
+    [JsonIgnore]
     public virtual Producto? AlmuerzoNavigation { get; set; }
 
+    [JsonIgnore]
     public virtual Producto? CenaNavigation { get; set; }
 
+    [JsonIgnore]
     public virtual Producto? DesayunoNavigation { get; set; }
 
-    public virtual Cliente IdClienteNavigation { get; set; } = null!;
+    [JsonIgnore]
+    public virtual Cliente IdClienteNavigation { get; set; }
 
+    [JsonIgnore]
     public virtual Producto? MeriendaMañanaNavigation { get; set; }
 
+    [JsonIgnore]
     public virtual Producto? MeriendaTardeNavigation { get; set; }
 }

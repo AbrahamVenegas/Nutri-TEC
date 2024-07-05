@@ -5,7 +5,7 @@
 
 version: 2
 updates:
-  - package-ecosystem: "nuget" # See documentation for possible values
+  - package-ecosystem: "npm_and_yarn" # See documentation for possible values
     directory: "/Nutri-TEC" # Location of package manifests
     schedule:
       interval: "weekly"
